@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -55,7 +56,7 @@ public class Caster {
 	public static final int texMask = texSize - 1;
 
 	protected CasterState state;
-	protected MeineGrafikBitmap screen;
+	protected RenderWindow screen;
 	protected Dimension dim;
 	protected IndexColorModel playpal;
 	protected byte[][] lightMap, transMap, fogMap, redMap, xorMap, additiveMap, subtractiveMap, multiplyMap, hueshiftMap, desarurateMap;
@@ -93,9 +94,9 @@ public class Caster {
 		dim = new Dimension(width, height);
 		fpsLabel = new JLabel();
 		maxZLabel = new JLabel();
-		screen = new MeineGrafikBitmap("Langenstein 3D", dim);
-		screen.steuerungNord.add(fpsLabel);
-		screen.steuerungNord.add(maxZLabel);
+		screen = new RenderWindow(dim,true);
+		//screen.steuerungNord.add(fpsLabel); TODO fix this
+		//screen.steuerungNord.add(maxZLabel);
 		state = CasterState.PLAYING;
 		pos = new Position(22, 12);
 		dir = new Vector(-1, 0);
@@ -133,7 +134,7 @@ public class Caster {
 
 		// Initialize Inputs
 		input = new Input();
-		screen.frame.addKeyListener(input);
+		screen.addKeyListener(input);
 		screen.canvas.addMouseMotionListener(input);
 
 		// Generate Textures
@@ -640,8 +641,9 @@ public class Caster {
 		 * compute elapsed time due to numerical overflow." The More You Know!
 		 */
 		// out.printf("W pressed? "+(input.states[Input.Keys.FORWARD.ordinal()]?"Yes":"No")+"%n");
-		screen.zeichneBild(bufferImg, 0, 0);
-		screen.repaint();
+		graph.setColor(Color.CYAN);
+		graph.drawString(Double.toString(fps), 0, h);
+		screen.showFrame(bufferImg);
 		fpsLabel.setText("FPS: " + Double.toString(fps));
 		maxZLabel.setText("Max Z: " + Double.toString(maxZ));
 	}
@@ -651,9 +653,9 @@ public class Caster {
 		final int w = dim.width;
 		final int h = dim.height;
 		// speed modifiers
-		double moveSpeed = frameTime * 5.0; // the constant value is in
+		double moveSpeed = (1/35f)/*frameTime*/ * 5.0; // the constant value is in
 											// squares/second
-		double rotSpeed = frameTime * 3.0; // the constant value is in
+		double rotSpeed = (1/35f)/*frameTime*/ * 3.0; // the constant value is in
 											// radians/second
 		if (input.isPressed(Keys.SPRINT))
 			moveSpeed *= 2;
@@ -744,8 +746,7 @@ public class Caster {
 				buffer[x + (512 * dim.width) + 512] = redscaleMap[x];
 			}
 		}
-		screen.zeichneBild(bufferImg, 0, 0);
-		screen.repaint();
+		screen.showFrame(bufferImg);
 	}
 
 	/*

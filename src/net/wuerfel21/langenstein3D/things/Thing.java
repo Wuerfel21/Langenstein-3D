@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wuerfel21.langenstein3D;
+package net.wuerfel21.langenstein3D.things;
 
 /**
  * @author Wuerfel_21

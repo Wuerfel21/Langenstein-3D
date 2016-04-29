@@ -43,6 +43,7 @@ public final class Starter {
 	}
 
 	public static void main(String[] args) { // TODO: Make launcher dialog, move timing somewhere else
+		System.setProperty("sun.java2d.opengl", "True");
 		//create sleeper, always a good idea!
 		new Sleeper().start();
 		switch (args.length) {
@@ -62,15 +63,15 @@ public final class Starter {
 		// music.play("DefianceNew");
 		long frameStart, frameStop;
 		while (!caster.doQuit()) {
-			/*frameStart = System.nanoTime();
-			frameStop = frameStart + 33333333l;*/
+			frameStart = System.nanoTime();
+			frameStop = frameStart + (1000000000l / 35);
 			caster.run();
-			/*if (System.nanoTime() < frameStop) try {
+			if (System.nanoTime() < frameStop) try {
 				if ((frameStop-System.nanoTime()) > 1500000)
 					Thread.sleep(Math.max(0,(frameStop-System.nanoTime()-1500000)/1000000)); //Wait until theres 1.5 ms left
 				while (System.nanoTime() < frameStop); //busy wait the remaining time
 			} catch (InterruptedException e) {
-			}*/
+			}
 		}
 		System.exit(0);
 	}
