@@ -1,0 +1,81 @@
+         _             _                   _             _              _            _             _          _            _             _          _                 _               _         
+        _\ \          / /\                /\ \     _    /\ \           /\ \         /\ \     _    / /\       /\ \         /\ \          /\ \       /\ \     _       /\ \             /\ \       
+       /\__ \        / /  \              /  \ \   /\_\ /  \ \         /  \ \       /  \ \   /\_\ / /  \      \_\ \       /  \ \         \ \ \     /  \ \   /\_\    /  \ \           /  \ \____  
+      / /_ \_\      / / /\ \            / /\ \ \_/ / // /\ \_\       / /\ \ \     / /\ \ \_/ / // / /\ \__   /\__ \     / /\ \ \        /\ \_\   / /\ \ \_/ / /   / /\ \ \         / /\ \_____\ 
+     / / /\/_/     / / /\ \ \          / / /\ \___/ // / /\/_/      / / /\ \_\   / / /\ \___/ // / /\ \___\ / /_ \ \   / / /\ \_\      / /\/_/  / / /\ \___/ /   / / /\ \ \       / / /\/___  / 
+    / / /         / / /  \ \ \        / / /  \/____// / / ______   / /_/_ \/_/  / / /  \/____/ \ \ \ \/___// / /\ \ \ / /_/_ \/_/     / / /    / / /  \/____/    \/_//_\ \ \     / / /   / / /  
+   / / /         / / /___/ /\ \      / / /    / / // / / /\_____\ / /____/\    / / /    / / /   \ \ \     / / /  \/_// /____/\       / / /    / / /    / / /       __\___ \ \   / / /   / / /   
+  / / / ____    / / /_____/ /\ \    / / /    / / // / /  \/____ // /\____\/   / / /    / / /_    \ \ \   / / /      / /\____\/      / / /    / / /    / / /       / /\   \ \ \ / / /   / / /    
+ / /_/_/ ___/\ / /_________/\ \ \  / / /    / / // / /_____/ / // / /______  / / /    / / //_/\__/ / /  / / /      / / /______  ___/ / /__  / / /    / / /       / /_/____\ \ \\ \ \__/ / /     
+/_______/\__\// / /_       __\ \_\/ / /    / / // / /______\/ // / /_______\/ / /    / / / \ \/___/ /  /_/ /      / / /_______\/\__\/_/___\/ / /    / / /       /__________\ \ \\ \___\/ /      
+\_______\/    \_\___\     /____/_/\/_/     \/_/ \/___________/ \/__________/\/_/     \/_/   \_____\/   \_\/       \/__________/\/_________/\/_/     \/_/        \_____________\/ \/_____/       
+
+ --- Langenstein 3D Concept Document ---
+
+ -- Selectable characters --
+When starting a new game, the player is able to select a character to play as.
+Each character has unique sprites and stats, like in Hexen (and i believe Rise of the Triad, too?).
+They may also use weapons in different ways. (Maybe they're not sure how to use it? Personal preference? Balancing? Convenient for programmer? Unconvenient for artist?)
+
+Stats:
+Speed - Affects movement speed, higher means faster.
+Defense/Endurance - Affects Damage taken, higher means less
+Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity of magic/tech based weapons. 
+ Medium can use both as normal, entirely tech can use tech weapons really well, but sucks at magic ones.
+ Neutral weapons are unaffected. What exactly and how much it is affected depends on the weapon.
+
+ -- Weapon Ideas --
+
+  Club:
+    Yawn. Would have used fists, but they would have to be redrawn for every character. Melee, no ammo, neutral.
+
+  Pencil gatling gun:
+    A gun that shoots pencils. Lots of pencils. Hitscan, uses pencils, mildy tech, alignment affects firing rate.
+
+  Zapper:
+    Like the NES zapper, but actually shoots stuff (similiar to Doom's plasma gun). Projectile, uses battery power, very tech, alignment affects firing rate or/and energy consumption.
+
+  Energy sphere:
+    A sphere of magical energy that can be shot. Projectile, uses magic energy, very magic, alignment affects damage.
+
+ -- Powerup/piclup ideas --
+  Handkäse (Hand cheese):
+    Restores some health.
+
+  First aid kit (Verbandskasten):
+    Restores some health.
+
+  Mod chip:
+    Temporarily upgrades tech weapons (like the tome of power from Heretic)
+
+  Focus crystal:
+    Temporarily upgrades magic weapons (like the tome of power from Heretic)
+
+ -- Enemy ideas --
+  Corrupted Unicorn:
+    A unicorn, but EVIL!!!
+
+ -- Boss ideas --
+  Meister der Elemente (Master of the Elements)
+    Boss of some Element-related area (fire,water,earth,air themed levels, the boss level combining elements from all 4)
+    
+  Gummihexe (Rubber Witch)
+    Boss of  the magical rubber tree forest
+
+  Netter Inder (nice indian)
+    Boss of the internet  (in german "Inder nett" sounds like "Internet". This pun is suprisingly funny). Lang lebe das Reich des netten Inders!
+
+ -- Area ideas --
+ Obviously everything mentioned in the Boss section, but not here.
+ 
+  Castle Langenstein:
+    First area in the game, which is semi-frequently revisited later on
+
+  Magical rubber tree forest:
+    Like your average magical forest, but made of rubber trees.
+
+  Internet:
+    A internet/cyber/VR/Matrix themed area. Lots of teleports (hyperlinks!).
+
+  Spiritual Plane/Final Destination:
+    Final area in the game. Very abstract and confusing architecture, in the later levels shifting towards a hellish theme.
