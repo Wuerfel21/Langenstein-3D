@@ -10,5 +10,5 @@ You can also export to a jar, but this is usually unnecessary.
 ### Oh wise master, how shall I contribute?
 Currently, contributions are not required/wanted, but they will when the game is in a vaguely playable state.
 
-### Who made that cool music (That isn't actually played at the moment)?
+### Who made that cool music?
 [Tanner Helland](http://www.tannerhelland.com/)!
