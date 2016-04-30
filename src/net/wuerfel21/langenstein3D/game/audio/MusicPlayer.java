@@ -2,11 +2,11 @@ package net.wuerfel21.langenstein3D.game.audio;
 
 import javax.sound.midi.*;
 
+import net.wuerfel21.langenstein3D.game.Loader;
+
 import java.io.BufferedInputStream;
-import java.util.*;
 
 public class MusicPlayer {
-	private HashMap<String, Sequence> tracks = new HashMap<String, Sequence>();
 	private Sequencer player;
 	private Synthesizer synth;
 	private Soundbank bank;
@@ -32,13 +32,8 @@ public class MusicPlayer {
 	 * Starts playing a new track
 	 */
 	public void play(String name) {
-		Sequence track = tracks.get(name); // Is track loaded?
 		try {
-			if (track == null) { // Apparently not
-				track = MidiSystem
-						.getSequence(getClass().getResourceAsStream("/assets/internal/music/" + name + ".mid")); // TODO: load external resources!!
-				tracks.put(name, track);
-			}
+			Sequence track = Loader.getSong(name);
 			player.stop();
 			player.setSequence(track);
 			player.setMicrosecondPosition(0); // Rewind if needed

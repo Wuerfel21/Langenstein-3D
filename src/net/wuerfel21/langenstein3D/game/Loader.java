@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -28,10 +30,11 @@ import net.wuerfel21.langenstein3D.game.render.Texture;;
  */
 public class Loader {
 	protected static final long CACHE_SIZE = 100; // TODO: Add config
-	public final LoadingCache<String, Texture> textureCache;
-	private CacheBuilder<Object, Object> builder;
+	protected static LoadingCache<String, Texture> textureCache;
+	protected static LoadingCache<String, Sequence> musicCache;
+	protected static CacheBuilder<Object, Object> softBuilder;
 
-	public class TextureLoader extends CacheLoader<String, Texture> {
+	public static class TextureLoader extends CacheLoader<String, Texture> {
 
 		@Override
 		public Texture load(String key) throws Exception {
@@ -78,18 +81,37 @@ public class Loader {
 		}
 
 	}
+	
+	public static class MusicLoader extends CacheLoader<String, Sequence> {
 
-	public Loader() {
-		builder = CacheBuilder.newBuilder().softValues().maximumSize(CACHE_SIZE);
-		textureCache = builder.build(new TextureLoader());
-
+		@Override
+		public Sequence load(String key) throws Exception {
+			InputStream in = getClass().getResourceAsStream("/assets/internal/music/" + key + ".mid"); // TODO: Load external/localized data
+			if (in == null) throw new FileNotFoundException("No song found for name " + key + " !!!");
+			return MidiSystem.getSequence(in);
+		}
 	}
 
-	public Texture getTexture(String name) {
+	static {
+		softBuilder = CacheBuilder.newBuilder().softValues().maximumSize(CACHE_SIZE);
+		textureCache = softBuilder.build(new TextureLoader());
+		musicCache = softBuilder.build(new MusicLoader());
+	}
+
+	public static Texture getTexture(String name) {
 		try {
 			return textureCache.get(name);
 		} catch (ExecutionException e) {
 			System.err.println("Texture loading error: " + e.toString());
+			return null;
+		}
+	}
+	
+	public static Sequence getSong(String name) {
+		try {
+			return musicCache.get(name);
+		} catch (ExecutionException e) {
+			System.err.println("Music loading error: " + e.toString());
 			return null;
 		}
 	}

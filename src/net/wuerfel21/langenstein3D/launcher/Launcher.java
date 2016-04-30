@@ -3,26 +3,22 @@
  */
 package net.wuerfel21.langenstein3D.launcher;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import net.wuerfel21.langenstein3D.game.GameConstants;
 import net.wuerfel21.langenstein3D.launcher.Launcher.StartButtonListener.NumberLock;
-import sun.reflect.Reflection;
 
 /**
  * @author Wuerfel_21
@@ -75,6 +71,7 @@ public class Launcher {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) {
 		System.setProperty("sun.java2d.opengl", "True"); // This allows using VSYNC and page flipping. TODO: Make configurable
+		MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 		try {
 			Class gameClass = ClassLoader.getSystemClassLoader().loadClass("net.wuerfel21.langenstein3D.game.Starter");
 			Method mainMethod = gameClass.getDeclaredMethod("main", new Class[] { String[].class });

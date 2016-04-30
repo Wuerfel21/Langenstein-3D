@@ -67,7 +67,6 @@ public class Caster {
 	public JLabel fpsLabel;
 	public JLabel maxZLabel;
 	protected double frameTime;
-	protected Loader loader;
 
 	protected double[] camXLookup;
 	protected BufferedImage bufferImg;
@@ -115,7 +114,6 @@ public class Caster {
 		negativeMap = Palette.getNegativeMap();
 		grayscaleMap = Palette.getGrayscaleMap();
 		redscaleMap = Palette.getRedscaleMap();
-		loader = new Loader();
 
 		// Initialize screen column to camera-relative X coordinate LUT
 		camXLookup = new double[dim.width];
@@ -143,24 +141,24 @@ public class Caster {
 		for (int x = 0; x < texSize; x++) {
 			for (int y = 0; y < texSize; y++) {
 				textures[0][x][y] = (byte) 0;
-				textures[1] = loader.getTexture("dhgWall/clean").data;
+				textures[1] = Loader.getTexture("dhgWall/clean").data;
 				// textures[2][x][y] = (byte) ((x != y && x != texSize - y) ? 9 : 1);
-				textures[2] = loader.getTexture("brkWall0/plate").data;
+				textures[2] = Loader.getTexture("brkWall0/plate").data;
 				textures[3][x][y] = (byte) max(1, x + (y * texSize));
 				textures[4][x][y] = (byte) (209 + (y >> 2));
 				// textures[5][x][y] = (byte) max(1, x + y);
-				textures[5] = loader.getTexture("brkWall0/normal").data;
-				textures[6] = loader.getTexture("carpet/0").data;
+				textures[5] = Loader.getTexture("brkWall0/normal").data;
+				textures[6] = Loader.getTexture("carpet/0").data;
 				textures[7][x][y] = (byte) ((x & y) != 0 ? 1 : 15);
-				textures[8] = loader.getTexture("dhgWall/cross").data;
-				textures[9] = loader.getTexture("dhgWall/crossBlood").data;
-				textures[10] = loader.getTexture("dhgWall/blood0").data;
-				textures[11] = loader.getTexture("dhgWall/dirty0").data;
-				textures[12] = loader.getTexture("dhgWall/dirty1").data;
-				textures[13] = loader.getTexture("dhgWall/dirty2").data;
-				textures[14] = loader.getTexture("brkWall0/tiny").data;
-				textures[15] = loader.getTexture("brkWall0/huge").data;
-				textures[16] = loader.getTexture("brkWall0/big").data;
+				textures[8] = Loader.getTexture("dhgWall/cross").data;
+				textures[9] = Loader.getTexture("dhgWall/crossBlood").data;
+				textures[10] = Loader.getTexture("dhgWall/blood0").data;
+				textures[11] = Loader.getTexture("dhgWall/dirty0").data;
+				textures[12] = Loader.getTexture("dhgWall/dirty1").data;
+				textures[13] = Loader.getTexture("dhgWall/dirty2").data;
+				textures[14] = Loader.getTexture("brkWall0/tiny").data;
+				textures[15] = Loader.getTexture("brkWall0/huge").data;
+				textures[16] = Loader.getTexture("brkWall0/big").data;
 			}
 		}
 
@@ -175,12 +173,12 @@ public class Caster {
 		screen.canvas.setCursor(blankCursor);
 
 		testSprites = new Sprite[] {
-				new Sprite(loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, 1, 1, 0, false, 1),
-				new Sprite(loader.getTexture("test"), false, 255, null, transMap, 1, 1, 0, false, 1),
-				new Sprite(loader.getTexture("test3"), true, 255, null, null, 1, 1, 0, false, 1),
+				new Sprite(Loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, 1, 1, 0, false, 1),
+				new Sprite(Loader.getTexture("test"), false, 255, null, transMap, 1, 1, 0, false, 1),
+				new Sprite(Loader.getTexture("test3"), true, 255, null, null, 1, 1, 0, false, 1),
 				new Sprite(
-						new Texture[] { loader.getTexture("x/0"), loader.getTexture("x/1"), loader.getTexture("x/2"), loader.getTexture("x/3"),
-								loader.getTexture("x/4"), loader.getTexture("x/5"), loader.getTexture("x/6"), loader.getTexture("x/7") },
+						new Texture[] { Loader.getTexture("x/0"), Loader.getTexture("x/1"), Loader.getTexture("x/2"), Loader.getTexture("x/3"),
+								Loader.getTexture("x/4"), Loader.getTexture("x/5"), Loader.getTexture("x/6"), Loader.getTexture("x/7") },
 						true, 255, null, additiveMap, 1, 1, 0, true, 4) };
 		testSpritesPos = new Position[] { new Position(10, 10.75), new Position(2.3, 4.5), new Position(2.5, 10.5), new Position(20, 10.5) };
 	}
@@ -649,6 +647,7 @@ public class Caster {
 		maxZLabel.setText("Max Z: " + Double.toString(maxZ));
 	}
 
+	@SuppressWarnings("unused")
 	public void logic() {
 		// Game Logic
 		final int w = dim.width;

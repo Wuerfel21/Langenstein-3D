@@ -1,10 +1,7 @@
 package net.wuerfel21.langenstein3D.game;
 
-import java.util.concurrent.TimeUnit;
-
 import net.wuerfel21.langenstein3D.game.audio.MusicPlayer;
 import net.wuerfel21.langenstein3D.game.render.Caster;
-import sun.java2d.pipe.hw.ExtendedBufferCapabilities;
 
 /**
  * Abstrakte Klasse Starter - beschreiben Sie hier die Klasse

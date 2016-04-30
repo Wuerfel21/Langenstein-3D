@@ -16,6 +16,7 @@ import java.util.Arrays;
  * @author Wuerfel_21
  *
  */
+@SuppressWarnings("unused")
 public class Texture {
 	/**
 	 * Holds the texture data
