@@ -1,0 +1,31 @@
+         _             _                   _             _              _            _             _          _            _             _          _                 _               _         
+        _\ \          / /\                /\ \     _    /\ \           /\ \         /\ \     _    / /\       /\ \         /\ \          /\ \       /\ \     _       /\ \             /\ \       
+       /\__ \        / /  \              /  \ \   /\_\ /  \ \         /  \ \       /  \ \   /\_\ / /  \      \_\ \       /  \ \         \ \ \     /  \ \   /\_\    /  \ \           /  \ \____  
+      / /_ \_\      / / /\ \            / /\ \ \_/ / // /\ \_\       / /\ \ \     / /\ \ \_/ / // / /\ \__   /\__ \     / /\ \ \        /\ \_\   / /\ \ \_/ / /   / /\ \ \         / /\ \_____\ 
+     / / /\/_/     / / /\ \ \          / / /\ \___/ // / /\/_/      / / /\ \_\   / / /\ \___/ // / /\ \___\ / /_ \ \   / / /\ \_\      / /\/_/  / / /\ \___/ /   / / /\ \ \       / / /\/___  / 
+    / / /         / / /  \ \ \        / / /  \/____// / / ______   / /_/_ \/_/  / / /  \/____/ \ \ \ \/___// / /\ \ \ / /_/_ \/_/     / / /    / / /  \/____/    \/_//_\ \ \     / / /   / / /  
+   / / /         / / /___/ /\ \      / / /    / / // / / /\_____\ / /____/\    / / /    / / /   \ \ \     / / /  \/_// /____/\       / / /    / / /    / / /       __\___ \ \   / / /   / / /   
+  / / / ____    / / /_____/ /\ \    / / /    / / // / /  \/____ // /\____\/   / / /    / / /_    \ \ \   / / /      / /\____\/      / / /    / / /    / / /       / /\   \ \ \ / / /   / / /    
+ / /_/_/ ___/\ / /_________/\ \ \  / / /    / / // / /_____/ / // / /______  / / /    / / //_/\__/ / /  / / /      / / /______  ___/ / /__  / / /    / / /       / /_/____\ \ \\ \ \__/ / /     
+/_______/\__\// / /_       __\ \_\/ / /    / / // / /______\/ // / /_______\/ / /    / / / \ \/___/ /  /_/ /      / / /_______\/\__\/_/___\/ / /    / / /       /__________\ \ \\ \___\/ /      
+\_______\/    \_\___\     /____/_/\/_/     \/_/ \/___________/ \/__________/\/_/     \/_/   \_____\/   \_\/       \/__________/\/_________/\/_/     \/_/        \_____________\/ \/_____/       
+
+ --- Langenstein 3D Technical Document ---
+
+ -- Level Format --
+The level format consists of a long array and an int array (for better cache usage) the size of the map:
+ - Int array -
+ 0-7	Floor/ceiling texture	=	Texture for the floor and ceiling in this tile. If the tile is completly filled with a wall, this can be used as extra metadata
+ 8-15	Light level				=	Light level of the tile, used for this tiles floor/ceiling and adjacent walls with the self-lighted bit unset
+ 16-23	Wall type/shape			=	Type of wall in this tile
+ 24-30	Tag						=	Used to reference groups of tiles
+ 31		Static Lighting			=	If set, the light level is not altered based on distance
+
+ - Long array -
+ 0		Self-Lighted			=	If set, walls in this tile will not use the light level of adjacent tiles
+ 8-15	Wall texture			=	Texture for the wall in this tile. If the tile does not contain a wall, this can be used as extra metadata
+ 16-31	Reserved				=	Reserved for future expansion	
+ 32-63	Metadata				=	Interpretation of this is based on tile type
+ 
+The int array contains data that is relecant when searching/scanning the map (e.g. raycasting, floorcastng, finding tagged tiles), whereas
+data in the long array is usually accessed specifically.

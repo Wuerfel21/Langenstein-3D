@@ -48,7 +48,7 @@ public final class Starter {
 		new Sleeper().start();
 		switch (args.length) {
 		case 3:
-			caster = new Caster(Integer.decode(args[0]), Integer.decode(args[1]),args[2].equals("window"));
+			caster = new Caster(Integer.decode(args[0]), Integer.decode(args[1]),!args[2].equals("window"));
 			break;
 		case 2:
 			caster = new Caster(Integer.decode(args[0]), Integer.decode(args[1]),true);

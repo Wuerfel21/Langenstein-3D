@@ -17,7 +17,7 @@ public class Input implements KeyListener, MouseMotionListener {
 		EXIT, FORWARD, BACKWARD, LEFT, RIGHT, TLEFT, TRIGHT, SPRINT
 	}
 
-	public boolean[] states;
+	protected boolean[] states;
 	public int[] codes = { KeyEvent.VK_ESCAPE, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D,
 			KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_SHIFT, };
 	public double mouseSpeed = 0.6;
