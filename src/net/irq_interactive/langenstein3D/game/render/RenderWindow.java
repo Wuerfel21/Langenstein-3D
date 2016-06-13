@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wuerfel21.langenstein3D.game.render;
+package net.irq_interactive.langenstein3D.game.render;
 
 import java.awt.BufferCapabilities;
 import java.awt.Canvas;
@@ -17,7 +17,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import net.wuerfel21.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.game.Loader;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType;
 
@@ -40,6 +41,7 @@ public class RenderWindow extends JFrame {
 	
 	public RenderWindow(Dimension d, boolean fullscreen) {
 		super(GameConstants.GAME + " " + GameConstants.VERSION);
+		this.setIconImages(Loader.getIcons());
 		this.setIgnoreRepaint(true);
 		if (fullscreen) this.setUndecorated(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

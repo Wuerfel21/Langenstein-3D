@@ -1,12 +1,12 @@
 /**
  * 
  */
-package net.wuerfel21.langenstein3D.game.render;
+package net.irq_interactive.langenstein3D.game.render;
 
-import static net.wuerfel21.langenstein3D.game.render.Caster.texFixShift;
-import static net.wuerfel21.langenstein3D.game.render.Caster.texMask;
-import static net.wuerfel21.langenstein3D.game.render.Caster.texSize;
-import static net.wuerfel21.langenstein3D.game.render.Caster.texWrapBit;
+import static net.irq_interactive.langenstein3D.game.render.Caster.texFixShift;
+import static net.irq_interactive.langenstein3D.game.render.Caster.texMask;
+import static net.irq_interactive.langenstein3D.game.render.Caster.texSize;
+import static net.irq_interactive.langenstein3D.game.render.Caster.texWrapBit;
 
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ public class Texture {
 	/**
 	 * Holds the metatexture data
 	 */
-	public final boolean[][] metaData;
+	public final byte[][] metaData;
 	/**
 	 * First non-transparent column
 	 */
@@ -61,7 +61,7 @@ public class Texture {
 	}
 	
 	public Texture(byte[][] data, boolean genStartStop, boolean copyData) {
-		this(data,genStartStop,copyData,new boolean[texSize][texSize]);
+		this(data,genStartStop,copyData,new byte[texSize][texSize]);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Texture {
 	 *            whether to copy the data array or use the passed instance
 	 * @param metaData
 	 */
-	public Texture(byte[][] data, boolean genStartStop, boolean copyData, boolean[][] metaData) {
+	public Texture(byte[][] data, boolean genStartStop, boolean copyData, byte[][] metaData) {
 		this.data = copyData ? data.clone() : data;
 		this.metaData = copyData ? metaData.clone() : metaData;
 		startRows = new int[texSize];

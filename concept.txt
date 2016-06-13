@@ -11,6 +11,52 @@
 \_______\/    \_\___\     /____/_/\/_/     \/_/ \/___________/ \/__________/\/_/     \/_/   \_____\/   \_\/       \/__________/\/_________/\/_/     \/_/        \_____________\/ \/_____/       
 
  --- Langenstein 3D Concept Document ---
+ 
+ -- Difficulty Levels --
+
+Please change my diapers / Kann jemand meine Windeln wechseln?
+Can we be friends? / Können wir Freunde sein?
+Give me a gun / Gib mir ne Knarre
+Tear my soul out / Reiß meine Seele raus
+I ENGLUT THY EXISTENCE / ICH VERZERE DEINE EXISTENZ
+
+ -- Game Modes --
+
+  Single Player:
+    Probably the most important mode. The level resets and all ammo/weapons/keys are lost when the player dies.
+    Levels are played in non-linear succession, sectioned into "Areas" with a boss or something at the end.
+    Not sure if weapons should be carried over from the last level, as it is often unclear what level(if any) was played before.
+    People at id Software once said the carryovers made doom too easy, so i'm undecided.
+    Also should the player be able to replay completed levels? Logic and convention say no, because all the monsters would be dead, stuff be looted, etc.
+    If the carryovers happen, this would throw the balance off, as whenever the player loses weapons,
+    they would just go to some short level with a big gun in it.
+    ...
+    Oh, you shoot monsters... And you have a fixed start position... And pickups 
+    
+  Coop:
+    The same as SP, but with friends! The level is never reset, but is slightly harder (more minibosses and stuff).
+    The levels (including their order and non-linearity) are mostly the same as in SP. with slight changes to levels which only really work for SP.
+    
+  Deathmatch:
+  	Mostly played in non-successive arena-like levels. Players shoot at each other with the intention of fragging them as often as possible.
+  	Player start at a random position selected from a set of start positions. Unsure what keys the player should have when spawning.
+  	Doom gives all keys(as if they didn't exist), but what if you only give the player the required keys to access the entire level from their start position(picking up the other keys in the process)?
+  	The pace would probably slow down, as the players would need to collect the missing keys a lot. The randomness of the start position will be more important,
+  	as it basically forces you to adapt to your spawn point and highlights some tactics...
+  	Let's make it an option!
+  	The levels end/change either by host command, time- or frag-limit.
+  	
+  Team Deathmatch:
+    Similar to DM, but with the players divided into teams. These teams are defined by their color. There are a maximum of 4 teams:
+    Red, blue, green and purple. Depending on an option, players can not hurt their teammates. Players can select their team, but depending on another option,
+    the teams will be auto-balanced to have the same number of players (+/-1). This is random (serverside SecureRandom) and redone everytime a new game starts,
+    to prevent unfairness and such. There also may be team specific spawn points in maps specific to TDM, typically inside some base-like place.
+    Also, teams share a single score.
+    
+  Capture the flag:
+  	Similiar to TDM, expect the goal isn't to frag the other team(s? dunno how well this would work for >2 teams), instead,
+  	every team has a flag(TODO: find a more intresting alternative to flags), which the player has to bring in contact with their own team's flag to get a point for their team.
+  	
 
  -- Selectable characters --
 When starting a new game, the player is able to select a character to play as.
@@ -39,7 +85,7 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
     A sphere of magical energy that can be shot. Projectile, uses magic energy, very magic, alignment affects damage.
 
  -- Powerup/piclup ideas --
-  Handk�se (Hand cheese):
+  Handk�se (Hand cheese):
     Restores some health.
 
   First aid kit (Verbandskasten):
@@ -79,3 +125,8 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
 
   Spiritual Plane/Final Destination:
     Final area in the game. Very abstract and confusing architecture, in the later levels shifting towards a hellish theme.
+    
+  -- Design Stuff --
+
+Magic/tech = Purple/green
+Fractals = Evil (Seriously, fractals are uncanny. I can't look at a mandelbulb for longer than a few seconds.)

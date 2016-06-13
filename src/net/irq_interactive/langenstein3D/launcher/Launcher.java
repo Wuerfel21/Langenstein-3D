@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wuerfel21.langenstein3D.launcher;
+package net.irq_interactive.langenstein3D.launcher;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -14,11 +14,13 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import net.wuerfel21.langenstein3D.game.GameConstants;
-import net.wuerfel21.langenstein3D.launcher.Launcher.StartButtonListener.NumberLock;
+import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.game.Loader;
+import net.irq_interactive.langenstein3D.launcher.Launcher.StartButtonListener.NumberLock;
 
 /**
  * @author Wuerfel_21
@@ -73,7 +75,7 @@ public class Launcher {
 		System.setProperty("sun.java2d.opengl", "True"); // This allows using VSYNC and page flipping. TODO: Make configurable
 		MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
 		try {
-			Class gameClass = ClassLoader.getSystemClassLoader().loadClass("net.wuerfel21.langenstein3D.game.Starter");
+			Class gameClass = ClassLoader.getSystemClassLoader().loadClass("net.irq_interactive.langenstein3D.game.Starter");
 			Method mainMethod = gameClass.getDeclaredMethod("main", new Class[] { String[].class });
 			if (args.length != 0)
 				mainMethod.invoke(null,(Object) args);
@@ -88,6 +90,7 @@ public class Launcher {
 
 	protected static Object launcherGui() {
 		frame = new JFrame(GameConstants.GAME + " Launcher " + GameConstants.VERSION);
+		frame.setIconImages(Loader.getIcons());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new FlowLayout());
 		NumberLock lock = new NumberLock();
@@ -101,8 +104,15 @@ public class Launcher {
 		JButton customButton = new JButton("Custom");
 		customButton.addActionListener(new StartButtonListener(lock, 2));
 		frame.add(customButton);
+		JButton editorButton = new JButton("Editor");
+		editorButton.addActionListener(new StartButtonListener(lock, 3));
+		frame.add(editorButton);
+		JLabel copyright = new JLabel("© 2016 IRQ Interactive");
+		frame.add(copyright);
 
+		frame.setResizable(false);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		try {
 			synchronized (lock) {
@@ -134,7 +144,9 @@ public class Launcher {
 			JButton customStart = new JButton("Launch");
 			customStart.addActionListener(new StartButtonListener(customLock, 0));
 			customDiag.add(customStart);
+			customDiag.setResizable(false);
 			customDiag.pack();
+			customDiag.setLocationRelativeTo(null);
 			customDiag.setVisible(true);
 			try {
 				synchronized (customLock) {
@@ -148,6 +160,8 @@ public class Launcher {
 				return new String[] { customWidth.getValue().toString(), customHeight.getValue().toString() };
 			else
 				return new String[] { customWidth.getValue().toString(), customHeight.getValue().toString(), "window" };
+		case 3:
+			return new String[] { "editor" };
 		}
 	}
 

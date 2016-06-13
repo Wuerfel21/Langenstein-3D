@@ -1,7 +1,7 @@
-package net.wuerfel21.langenstein3D.game;
+package net.irq_interactive.langenstein3D.game;
 
 /**
- * Two ints in an object.
+ * Two ints in one object.
  * 
  * @author Wuerfel_21
  */
@@ -63,5 +63,9 @@ public class Int2D {
 	 */
 	public Int2D copy() {
 		return new Int2D(this);
+	}
+	
+	public String toString() {
+		return Integer.toString(x)+";"+Integer.toString(y);
 	}
 }

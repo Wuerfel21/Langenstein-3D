@@ -1,4 +1,4 @@
-package net.wuerfel21.langenstein3D.game.render;
+package net.irq_interactive.langenstein3D.game.render;
 
 import java.awt.image.*;
 import java.util.Arrays;

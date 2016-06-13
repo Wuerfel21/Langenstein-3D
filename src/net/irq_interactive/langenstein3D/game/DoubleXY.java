@@ -1,4 +1,4 @@
-package net.wuerfel21.langenstein3D.game;
+package net.irq_interactive.langenstein3D.game;
 
 /**
  * Two doubles in one one class.

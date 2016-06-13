@@ -1,8 +1,8 @@
-package net.wuerfel21.langenstein3D.game.audio;
+package net.irq_interactive.langenstein3D.game.audio;
 
 import javax.sound.midi.*;
 
-import net.wuerfel21.langenstein3D.game.Loader;
+import net.irq_interactive.langenstein3D.game.Loader;
 
 import java.io.BufferedInputStream;
 
@@ -18,7 +18,8 @@ public class MusicPlayer {
 			// Initialize MIDI output
 			player = MidiSystem.getSequencer(false);
 			synth = MidiSystem.getSynthesizer();
-			bank = MidiSystem.getSoundbank(new BufferedInputStream(getClass().getResourceAsStream("/assets/internal/ChoriumRevA.SF2")));
+			// The BufferedInputStream is required for launching from jar, as the decompression thing can't seek. TODO: Use proper Loader
+			bank = MidiSystem.getSoundbank(new BufferedInputStream(Loader.getInternalloader().get("/assets/internal/ChoriumRevA.SF2")));
 			player.open();
 			synth.open();
 			player.getTransmitter().setReceiver(synth.getReceiver());
@@ -33,7 +34,7 @@ public class MusicPlayer {
 	 */
 	public void play(String name) {
 		try {
-			Sequence track = Loader.getSong(name);
+			Sequence track = Loader.getInternalloader().getSong(name);// TODO: Use proper Loader
 			player.stop();
 			player.setSequence(track);
 			player.setMicrosecondPosition(0); // Rewind if needed

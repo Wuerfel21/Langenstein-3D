@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/Langenstein 3D/src/net/wuerfel21/langenstein3D/launcher/Launcher.java"/>
+<listEntry value="/Langenstein-3D/src/net/irq_interactive/langenstein3D/launcher/Launcher.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.wuerfel21.langenstein3D.launcher.Launcher"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.irq_interactive.langenstein3D.launcher.Launcher"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="colormap"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Langenstein 3D"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Langenstein-3D"/>
 </launchConfiguration>

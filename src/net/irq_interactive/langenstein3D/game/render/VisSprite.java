@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wuerfel21.langenstein3D.game.render;
+package net.irq_interactive.langenstein3D.game.render;
 
 import java.util.Comparator;
 

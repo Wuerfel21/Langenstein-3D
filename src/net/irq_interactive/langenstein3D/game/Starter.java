@@ -1,7 +1,9 @@
-package net.wuerfel21.langenstein3D.game;
+package net.irq_interactive.langenstein3D.game;
 
-import net.wuerfel21.langenstein3D.game.audio.MusicPlayer;
-import net.wuerfel21.langenstein3D.game.render.Caster;
+import java.lang.reflect.Constructor;
+
+import net.irq_interactive.langenstein3D.game.audio.MusicPlayer;
+import net.irq_interactive.langenstein3D.game.render.Caster;
 
 /**
  * Abstrakte Klasse Starter - beschreiben Sie hier die Klasse
@@ -39,7 +41,7 @@ public final class Starter {
 		
 	}
 
-	public static void main(String[] args) { // TODO: Make launcher dialog, move timing somewhere else
+	public static void main(String[] args) { // TODO: no longer pass values as strings, move timing somewhere else
 		System.setProperty("sun.java2d.opengl", "True"); //This allows using VSYNC and page flipping. TODO: Make configurable
 		//create sleeper, always a good idea!
 		new Sleeper().start();
@@ -57,6 +59,16 @@ public final class Starter {
 			} else if (args[0].equals("window")) {
 				caster = new Caster(640, 400,false);
 				break;
+			} else if (args[0].equals("editor")) {
+				try {
+					Class<?> editorClass = ClassLoader.getSystemClassLoader().loadClass("net.irq_interactive.langenstein3D.editor.EditorMain");
+					Constructor<?> con = editorClass.getConstructor(String[].class);
+					con.newInstance((Object)new String[0]);
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
 			}
 		default:
 			caster = new Caster(640, 400,true);
