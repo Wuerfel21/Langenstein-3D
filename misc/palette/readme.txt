@@ -1,10 +1,10 @@
-These are the Langenstein 3D palette files for use with Usenti
+These are palette files for use with Usenti, containing the Langenstein 3D master palette and various other palettes.
 
 playpal:
 	The actual game palette. Color 0 is transparent
 
 metapal1:
-	Useful for creating metatextures for mode 1.
+	Useful for creating mode 1 metatextures.
 	Black	:	Lighted, no colormaps
 	Blue	:	Lighted, 1D colormap
 	Green	:	Lighted, 2D colormap
