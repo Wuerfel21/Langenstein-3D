@@ -48,19 +48,19 @@ public class Sprite {
 	 * <tbody>
 	 * <tr><td>0</td><td>NOP: metatexture ignored</td></tr>
 	 * <tr><td>1</td><td>Colormap/fullbright: bit7 = force fullbright, bit6 = 2d colormap, bit5 = 1d colormap</td></tr>
-	 * <tr><td>2</td><td>Alpha: the metatexture is used as an alpha value. 2D colormap is ignored</td></tr>
+	 * <tr><td>2</td><td>[NYI]Alpha: the metatexture is used as an alpha value. 2D colormap is ignored</td></tr>
 	 * <tr><td>3</td><td>Brightness: the metatexture data is added to the usual light level</td></tr>
 	 * </tbody>
 	 * </table>
 	 */
 	public final int metatextureMode;
 
-	public final double scaleX, scaleY, offsetY; // TODO: Implement these
-
 	/**
-	 * Whether the metatexture should be used. If this is true, the 2D color table is only applied to pixels where the metatexture is true
+	 * Fixed point values
 	 */
-	public final double repeatRotations;
+	public final int scaleX, scaleY, offsetY; // TODO: Implement these
+
+	public final int repeatRotations;
 
 	/**
 	 * Constructs a new Sprite object. The parameters are the values for the respective fields.
@@ -74,8 +74,8 @@ public class Sprite {
 	 * @param scaleY
 	 * @param offsetY
 	 */
-	public Sprite(Texture[] rotations, boolean staticLighting, int staticLightLevel, byte[] colorTable1d, byte[][] colorTable2d, double scaleX, double scaleY,
-			double offsetY, int metatextureMode, double repeatRotations) {
+	public Sprite(Texture[] rotations, boolean staticLighting, int staticLightLevel, byte[] colorTable1d, byte[][] colorTable2d, int scaleX, int scaleY,
+			int offsetY, int metatextureMode, int repeatRotations) {
 		this.rotations = rotations;
 		this.staticLighting = staticLighting;
 		this.staticLightLevel = staticLightLevel;
@@ -88,8 +88,8 @@ public class Sprite {
 		this.repeatRotations = repeatRotations;
 	}
 
-	public Sprite(Texture tex, boolean staticLighting, int staticLightLevel, byte[] colorTable1d, byte[][] colorTable2d, double scaleX, double scaleY,
-			double offsetY, int metatextureMode, double repeatRotations) {
+	public Sprite(Texture tex, boolean staticLighting, int staticLightLevel, byte[] colorTable1d, byte[][] colorTable2d, int scaleX, int scaleY,
+			int offsetY, int metatextureMode, int repeatRotations) {
 		this(new Texture[] { tex }, staticLighting, staticLightLevel, colorTable1d, colorTable2d, scaleX, scaleY, offsetY, metatextureMode, repeatRotations);
 	}
 

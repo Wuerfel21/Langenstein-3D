@@ -3,8 +3,6 @@
  */
 package net.irq_interactive.langenstein3D.editor.misc;
 
-import java.util.Arrays;
-
 import net.irq_interactive.langenstein3D.editor.EditorLevel;
 import net.irq_interactive.langenstein3D.editor.EditorLevel.Tile;
 

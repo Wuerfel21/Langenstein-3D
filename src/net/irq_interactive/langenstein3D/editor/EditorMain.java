@@ -1,29 +1,25 @@
 package net.irq_interactive.langenstein3D.editor;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import net.irq_interactive.langenstein3D.game.GameConstants;
-import net.irq_interactive.langenstein3D.game.Loader;
-
+import java.awt.BorderLayout;
+import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-
-import javax.swing.JDesktopPane;
-import java.awt.BorderLayout;
-import java.awt.HeadlessException;
-
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.game.Loader;
 
 
 /**

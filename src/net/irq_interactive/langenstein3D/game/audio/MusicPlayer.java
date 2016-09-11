@@ -18,7 +18,7 @@ public class MusicPlayer {
 			// Initialize MIDI output
 			player = MidiSystem.getSequencer(false);
 			synth = MidiSystem.getSynthesizer();
-			// The BufferedInputStream is required for launching from jar, as the decompression thing can't seek. TODO: Use proper Loader
+			// The BufferedInputStream is required for launching from jar, as the decompression thing can't seek.
 			bank = MidiSystem.getSoundbank(new BufferedInputStream(Loader.getInternalloader().get("/assets/internal/Langenstein 3D.SF2")));
 			player.open();
 			synth.open();

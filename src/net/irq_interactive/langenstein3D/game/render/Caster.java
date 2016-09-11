@@ -12,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.image.*;
 import javax.swing.*;
 
+import net.irq_interactive.langenstein3D.FixedPoint;
 import net.irq_interactive.langenstein3D.game.Input;
 import net.irq_interactive.langenstein3D.game.Int2D;
 import net.irq_interactive.langenstein3D.game.Loader;
@@ -29,6 +30,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.abs;
 import static java.lang.Math.PI;
 import static java.lang.System.out;
+import static net.irq_interactive.langenstein3D.FixedPoint.FIXMULTI;
 
 /**
  * This class handles raycasting and misc rendering. Currently it also contains game logic, but this will be moved out later.
@@ -54,6 +56,8 @@ public class Caster {
 	public static final int texFixShift = -(texWrapBit - 16);
 	public static final int texSize = 1 << texWrapBit;
 	public static final int texMask = texSize - 1;
+
+	public static final double PI2 = 2 * PI;
 
 	protected CasterState state;
 	protected RenderWindow screen;
@@ -175,13 +179,13 @@ public class Caster {
 		screen.canvas.setCursor(blankCursor);
 
 		testSprites = new Sprite[] {
-				new Sprite(loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, 1, 1, 0, 0, 1),
-				new Sprite(loader.getTexture("test"), false, 255, null, transMap, 1, 1, 0, 0, 1),
-				new Sprite(loader.getTexture("test3"), true, 255, null, null, 1, 1, 0, 0, 1),
+				new Sprite(loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, FIXMULTI, FIXMULTI / 2, -FIXMULTI / 2, 0, 1),
+				new Sprite(loader.getTexture("test"), false, 255, null, transMap, FIXMULTI * 2, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("test3"), true, 255, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
 				new Sprite(
 						new Texture[] { loader.getTexture("x/0"), loader.getTexture("x/1"), loader.getTexture("x/2"), loader.getTexture("x/3"),
 								loader.getTexture("x/4"), loader.getTexture("x/5"), loader.getTexture("x/6"), loader.getTexture("x/7") },
-						true, 255, null, additiveMap, 1, 1, 0, 1, 4) };
+						true, 255, null, additiveMap, FIXMULTI, FIXMULTI, 0, 1, 4) };
 		testSpritesPos = new Position[] { new Position(10, 10.75), new Position(2.3, 4.5), new Position(2.5, 10.5), new Position(20, 10.5) };
 	}
 
@@ -401,6 +405,7 @@ public class Caster {
 		final double invDet = 1.0 / (plane.x * dir.y - dir.x * plane.y); // required for correct matrix multiplication (moved outside of loop because constant)
 		vissprites.clear();
 		for (int i = 0; i < testSprites.length; i++) { // TODO: Get useful sprites here
+			Sprite spr = testSprites[i];
 			// Translate sprite position to camera space
 			double relX = testSpritesPos[i].x - pos.x;
 			double relY = testSpritesPos[i].y - pos.y;
@@ -419,21 +424,21 @@ public class Caster {
 
 			int spriteScreenX = (int) ((w / 2) * (1 + transformX / transformY));
 			// calculate height of the sprite on screen
-			int spriteHeight = abs((int) (h / (transformY))); // using "transformY" instead of the real distance prevents fisheye
+			int spriteHeight = abs((int) ((h / (transformY)) * FixedPoint.fixToDouble(spr.scaleY))); // using "transformY" instead of the real distance prevents
+																										// fisheye
 			// calculate lowest and highest pixel to fill in current stripe
-			int drawStartY = -spriteHeight / 2 + h / 2;
+			int offsetY = (spr.offsetY * spriteHeight) >> 16;
+			int drawStartY = (-spriteHeight / 2 + h / 2) + offsetY;
 			// if (drawStartY < 0) drawStartY = 0;
-			int drawEndY = spriteHeight / 2 + h / 2;
+			int drawEndY = (spriteHeight / 2 + h / 2) - offsetY;
 			if (drawEndY >= h) drawEndY = h - 1;
 
 			// calculate width of the sprite
-			int spriteWidth = abs((int) (w * (66.0 / 90.0) / (transformY))); // TODO: Make this better
+			int spriteWidth = abs((int) (w * FixedPoint.fixToDouble(spr.scaleX) * (66.0 / 90.0) / (transformY))); // TODO: Make this better
 			int drawStartX = -spriteWidth / 2 + spriteScreenX;
 			// if (drawStartX < 0) drawStartX = 0;
 			int drawEndX = spriteWidth / 2 + spriteScreenX;
 			if (drawEndX >= w) drawEndX = w - 1;
-
-			Sprite spr = testSprites[i];
 
 			int light = spr.staticLighting ? spr.staticLightLevel : max(0, min(255, (int) (((255 / transformY) * 5)))); // TODO: Improve lighting algorithm
 
@@ -442,16 +447,18 @@ public class Caster {
 			if (spr.rotations.length == 1) {
 				rotation = 0;
 			} else {
-				// double spriteAngle = ((frame%320)/320.0) + PI; //TODO: Use thing object here
-				/*
-				 * double spriteAngle = ((System.nanoTime()%3200000000l)/3200000000.0) + PI; double playerAngle = Math.atan2(dir.y,dir.x); //TODO: use player
-				 * angle here double relRotation = spriteAngle - playerAngle; rotation = (((int)Math.floor(((relRotation / (-2*PI)) *
-				 * spr.repeatRotations)*spr.rotations.length))%spr.rotations.length + spr.rotations.length)%spr.rotations.length;
-				 */
-				rotation = (int) ((System.nanoTime() % 3200000000l) / 100000000) % spr.rotations.length;
+				double spriteAngle = 0;// ((frame % 320) / 320.0) * 2 * PI; // TODO: Use thing object here
+				double playerAngle = Math.atan2(relY, relX);
+				double relRotation = spriteAngle + playerAngle;
+				while (relRotation < 0)
+					relRotation += PI2;
+				// rotation = (((int) Math.floor(((relRotation / (-2 * PI)) *
+				// spr.repeatRotations) * spr.rotations.length)) % spr.rotations.length + spr.rotations.length) % spr.rotations.length;
+
+				rotation = (int) Math.round(relRotation / (PI2) * spr.rotations.length * spr.repeatRotations) % spr.rotations.length;
 			}
 
-			vissprites.add(new VisSprite(spr, transformY, drawStartX, drawStartY, spriteWidth, spriteHeight, rotation, light)); // TODO: Add rotation
+			vissprites.add(new VisSprite(spr, transformY, drawStartX, drawStartY, spriteWidth, spriteHeight, rotation, light));
 		}
 		// Sort sprites
 		vissprites.sort(zComparator);
@@ -496,12 +503,12 @@ public class Caster {
 				int drawPointer = x + (screenStart * w);
 				switch (renderType) {
 				default:
-					throw new IndexOutOfBoundsException("Invalid render type: "+Integer.toHexString(renderType));
+					throw new IndexOutOfBoundsException("Invalid render type: " + Integer.toHexString(renderType));
 				case 0x00: // Lighted, no color tables
 					while (texPos < stop && drawPointer < buffer.length) {
-						byte texel = lightMap[light][(int) (texData[texX][((texPos) >> 16) & texMask]) & 0xFF];
+						int texel = (texData[texX][((texPos) >> 16) & texMask]) & 0xFF;
 						if (texel != 0)
-							buffer[drawPointer] = texel;
+							buffer[drawPointer] = lightMap[light][texel];
 
 						drawPointer += w;
 						texPos += texRatio;
@@ -551,6 +558,7 @@ public class Caster {
 					}
 					break;
 				case 0x05: // Fullbright, 2d color table
+				case 0x35: // Fullbright, 2d color table, metamode 3(useless)
 					while (texPos < stop && drawPointer < buffer.length) {
 						int texel = texData[texX][((texPos) >> 16) & texMask] & 0xFF;
 						if (texel != 0)
@@ -570,7 +578,8 @@ public class Caster {
 						texPos += texRatio;
 					}
 					break;
-				case 0x7: // Fullbright, both color tables
+				case 0x07: // Fullbright, both color tables
+				case 0x37: // Fullbright, both color tables, metamode 3(useless)
 					while (texPos < stop && drawPointer < buffer.length) {
 						int texel = (int) coltab1d[(int) (texData[texX][((texPos) >> 16) & texMask]) & 0xFF] & 0xFF;
 						if (texel != 0)
@@ -622,7 +631,7 @@ public class Caster {
 						byte meta = metaData[texX][texY];
 						int texel = (meta & 0x80) != 0 ? texData[texX][texY] : lightMap[light][(int) (texData[texX][texY]) & 0xFF];
 						if (texel != 0)
-							buffer[drawPointer] = (meta & 0x40) == 0 ? (byte)texel : coltab2d[texel][buffer[drawPointer] & 0xFF];
+							buffer[drawPointer] = (meta & 0x40) == 0 ? (byte) texel : coltab2d[texel][buffer[drawPointer] & 0xFF];
 
 						drawPointer += w;
 						texPos += texRatio;
@@ -634,13 +643,13 @@ public class Caster {
 						byte meta = metaData[texX][texY];
 						byte texel = texData[texX][texY];
 						if (texel != 0)
-							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int)texel&0xFF][buffer[drawPointer] & 0xFF];
+							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int) texel & 0xFF][buffer[drawPointer] & 0xFF];
 
 						drawPointer += w;
 						texPos += texRatio;
 					}
 					break;
-				case 0x16: // Lighted, both color tables, metamode 1.  This is madness. Or sparta. Depends on how you view it.
+				case 0x16: // Lighted, both color tables, metamode 1. This is madness. Or sparta. Depends on how you view it.
 					while (texPos < stop && drawPointer < buffer.length) {
 						int texY = ((texPos) >> 16) & texMask;
 						byte meta = metaData[texX][texY];
@@ -648,7 +657,7 @@ public class Caster {
 						if ((meta & 0x80) == 0)
 							texel = lightMap[light][(int) texel % 0xFF];
 						if (texel != 0)
-							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int)texel&0xFF][buffer[drawPointer] & 0xFF];
+							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int) texel & 0xFF][buffer[drawPointer] & 0xFF];
 
 						drawPointer += w;
 						texPos += texRatio;
@@ -660,13 +669,46 @@ public class Caster {
 						byte meta = metaData[texX][texY];
 						byte texel = (meta & 0x20) == 0 ? texData[texX][texY] : coltab1d[(int) (texData[texX][texY]) & 0xFF];
 						if (texel != 0)
-							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int)texel&0xFF][buffer[drawPointer] & 0xFF];
+							buffer[drawPointer] = (meta & 0x40) == 0 ? texel : coltab2d[(int) texel & 0xFF][buffer[drawPointer] & 0xFF];
 
 						drawPointer += w;
 						texPos += texRatio;
 					}
 					break;
-				//TODO: Implement the other metamodes
+				case 0x30: // Lighted, no color tables, metamode 3
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = (texData[texX][texY]) & 0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = lightMap[min(light + (((int) metaData[texX][texY]) & 0xFF), 0xFF)][texel];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				case 0x32: // Lighted, 1d color table, metamode 3
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel =  coltab1d[(int) (texData[texX][((texPos) >> 16) & texMask]) & 0xFF] & 0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = lightMap[min(light + (((int) metaData[texX][texY]) & 0xFF), 0xFF)][texel];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				case 0x34: // Lighted, 2d color table, metamode 3
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = lightMap[min(light + (((int) metaData[texX][texY]) & 0xFF), 0xFF)][(int) (texData[texX][texY]) & 0xFF] & 0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = coltab2d[texel][buffer[drawPointer] & 0xFF];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				// TODO: Implement the other metamodes
 				}
 
 			}

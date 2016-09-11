@@ -12,7 +12,7 @@ import net.irq_interactive.langenstein3D.game.Int2D;
  */
 public abstract strictfp class Thing {
 	
-	protected double angle;
+	protected int angle;
 	protected int x,y; //Fixed point
 	
 	/**
@@ -43,7 +43,7 @@ public abstract strictfp class Thing {
 	/**
 	 * @param angle the angle to set
 	 */
-	public void setAngle(double angle) {
+	public void setAngle(int angle) {
 		this.angle = angle;
 	}
 

@@ -4,6 +4,7 @@
 package net.irq_interactive.langenstein3D;
 
 /**
+ * Handles 16.16 fixed point math and 0.32 angles.
  * @author Wuerfel_21
  *
  */
@@ -13,6 +14,8 @@ public final strictfp class FixedPoint {
 	public static final double FIXMULTIfp = 0x10000;
 	public static final int FIXDIV = 1;
 	public static final double FIXDIVfp = 1 / FIXMULTIfp;
+	
+	public static final double ANGTORAD = (1/0x100000000l)*StrictMath.PI;
 
 	public static final int MAX_VALUE = 0x7FFFFFFF;
 
@@ -48,6 +51,10 @@ public final strictfp class FixedPoint {
 	 */
 	public static final int fixdiv(int f1, int f2) {
 		return (int) ((((long) f1) << 16) / f2);
+	}
+	
+	public static final double angToDouble(int a) {
+		return a * ANGTORAD;
 	}
 
 	public static final int fixSqrt(int x) {

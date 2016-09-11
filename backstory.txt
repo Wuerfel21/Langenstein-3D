@@ -1,0 +1,63 @@
+         _             _                   _             _              _            _             _          _            _             _          _                 _               _         
+        _\ \          / /\                /\ \     _    /\ \           /\ \         /\ \     _    / /\       /\ \         /\ \          /\ \       /\ \     _       /\ \             /\ \       
+       /\__ \        / /  \              /  \ \   /\_\ /  \ \         /  \ \       /  \ \   /\_\ / /  \      \_\ \       /  \ \         \ \ \     /  \ \   /\_\    /  \ \           /  \ \____  
+      / /_ \_\      / / /\ \            / /\ \ \_/ / // /\ \_\       / /\ \ \     / /\ \ \_/ / // / /\ \__   /\__ \     / /\ \ \        /\ \_\   / /\ \ \_/ / /   / /\ \ \         / /\ \_____\ 
+     / / /\/_/     / / /\ \ \          / / /\ \___/ // / /\/_/      / / /\ \_\   / / /\ \___/ // / /\ \___\ / /_ \ \   / / /\ \_\      / /\/_/  / / /\ \___/ /   / / /\ \ \       / / /\/___  / 
+    / / /         / / /  \ \ \        / / /  \/____// / / ______   / /_/_ \/_/  / / /  \/____/ \ \ \ \/___// / /\ \ \ / /_/_ \/_/     / / /    / / /  \/____/    \/_//_\ \ \     / / /   / / /  
+   / / /         / / /___/ /\ \      / / /    / / // / / /\_____\ / /____/\    / / /    / / /   \ \ \     / / /  \/_// /____/\       / / /    / / /    / / /       __\___ \ \   / / /   / / /   
+  / / / ____    / / /_____/ /\ \    / / /    / / // / /  \/____ // /\____\/   / / /    / / /_    \ \ \   / / /      / /\____\/      / / /    / / /    / / /       / /\   \ \ \ / / /   / / /    
+ / /_/_/ ___/\ / /_________/\ \ \  / / /    / / // / /_____/ / // / /______  / / /    / / //_/\__/ / /  / / /      / / /______  ___/ / /__  / / /    / / /       / /_/____\ \ \\ \ \__/ / /     
+/_______/\__\// / /_       __\ \_\/ / /    / / // / /______\/ // / /_______\/ / /    / / / \ \/___/ /  /_/ /      / / /_______\/\__\/_/___\/ / /    / / /       /__________\ \ \\ \___\/ /      
+\_______\/    \_\___\     /____/_/\/_/     \/_/ \/___________/ \/__________/\/_/     \/_/   \_____\/   \_\/       \/__________/\/_________/\/_/     \/_/        \_____________\/ \/_____/       
+
+ --- Langenstein 3D Story Document ---
+ WARNING: Lazy language ahead!
+ 
+ -- Setting --
+ The game starts in in its namesake, Castle Langenstein(Schloss Langenstein in german). (Not the actual "Castle Langenstein", but a school in Germany that's jokingly
+ called this), but the levels represent the journey to the Spirit Plane, where the final confrontation takes place.
+ 
+ -- Beginning --
+ The games narrative starts with a depressed(?) student at castle Langenstein, who performs some kind of powerful ritual or whatever to
+ become a super powerful demon thingy. He then proceeds to raid Langenstein, capturing the inhabitants (teachers, students and stuff) and filling it
+ with evil creatures. What he didn't know was the fact that this was the day where the exchange students arrive.(the player(s)) Those are cool or something.
+ They notice something is wrong, and go in to investigate. They find a note written in hurry informing them about the situation. They decide
+ to try and free everyone from their prison.
+ 
+ -- Langenstein 1 --
+ The first thing to do is clean Langenstein of evil. Game design wise, the player is made familiar with game mechanics and controls.
+ Some easy Boss is fought, maybe some kind of demon commander?
+ 
+ -- Coffee Factory --
+ The players find out that there's one member of Langenstein's staff that wasn't there that day, but instead in his coffee factory.
+ The players decide to go there to get help and friendly advice or something. Upon arrival, they see that the factory was infested with
+ evil. The players conquer the factory to find the Chef being held captive by a boss. After defeating the boss, the Chef informs the players of
+ the Guardian of Time, who surely knows what to do next. He also informs them of the Guardian's location, which can only be found with
+ a special map, stored somewhere in Langenstein.
+ 
+ -- Langenstein 2 --
+ In the meantime, the evil has crept back into Langenstein. Business as usual, a couple levels, a boss.
+ 
+ -- Magical rubber tree forest --
+ As always, the evilness is one step ahead of the players. They make their way to the sacred grove, where once again, a boss is fought.
+ The Guardian of Time tells the players that in order to free the people of Langenstein and get rid of the evil, they will have to
+ venture to the spirit plane. There are a couple ways to get in and out of the spirit plane, but due to the complex multidimensional
+ topology of the spirit plane, the location of the root of the evil in the spirit plane and the positions of the gates, only one gate is
+ reasonable to use, and it's in egypt! Also, a mysterious envelope, also hidden in Langenstein, is required to use it.
+ The shareware version, if there will be one, ends here.
+ 
+ -- Langenstein 3 --
+ Evil is back once again, but after a few levels and a boss(at this point some kind of recycled boss), the envelope is found. Surprisingly, it
+ contains an unlabeled 5,25 inch floppy disk!
+ 
+ -- Egypt --
+ The evil forces know about the gate, so they guard it. Otherwise, your stereotypical egypt theme. After another boss, the players
+ find the gate! But what?!?! There's just a battered C128DCR! But inserting the floppy, the players get sucked into a cyber world.
+ 
+ -- Computer --
+ Cyber! The computer is also possessed by evil, what else? After the usual procedure, the players go on to the...
+ 
+ -- Spirit Plane --
+ Here, chaos rules with an iron fist and nothing is as it seems! After traversing the "overworld", the players enter the villain's fortress.
+ On the roof, the final encounter takes place. After defeating the villain, he disintegrates into smoke and the evil sent forth by him vanishes.
+ He leaves with some last words: "I will be back... and I will avenge thy doings!" The credits roll.

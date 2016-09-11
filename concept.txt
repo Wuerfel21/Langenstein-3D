@@ -16,7 +16,7 @@
 
 Please change my diapers / Kann jemand meine Windeln wechseln?
 Can we be friends? / Können wir Freunde sein?
-Give me a gun / Gib mir ne Knarre
+Give me a gun / Gib mir ne' Knarre
 Tear my soul out / Reiß meine Seele raus
 I ENGLUT THY EXISTENCE / ICH VERZERE DEINE EXISTENZ
 
@@ -119,6 +119,9 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
 
   Magical rubber tree forest:
     Like your average magical forest, but made of rubber trees.
+    
+  Coffee factory:
+    The Chef's personal coffee factory. Metal and pipes. Hot coffee as damage floor?
 
   Internet:
     A internet/cyber/VR/Matrix themed area. Lots of teleports (hyperlinks!).

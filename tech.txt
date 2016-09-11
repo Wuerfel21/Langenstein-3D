@@ -15,13 +15,19 @@
  INFORMATION IN THIS DOCUMENT IS SUBJECT TO FREQUENT CHANGES!!!
  
  -- Coordinate System --
-Screen:
- X: left to right
- Y: top to bottom
+Screen/textures:
+ X: left to right, first bitmap index
+ Y: top to bottom, second bitmap index
+ 
 3D:
- X: primary map index
- Y: secondary map index
+ X: first map index
+ Y: second map index
  Z: top to bottom
+ 
+ (e.g. texture[y][x], map[x][y]
+  This irregularity is done for performance reasons, most textures are drawn in vertical strips. Making Y the second index places all pixels of a column sequentially in memory.
+  Because data is fetched from SDRAM in blocks of multiple bytes, when one pixel is fetched, the ones below/above are fetched too, and placed in the cache. As the are used very soon,
+  they are very probably still cached.)
 
  -- Level Format --
 The runtime level format consists of two long 2D arrays and one int 2D array (for better cache usage) the size of the map:
@@ -40,7 +46,7 @@ The runtime level format consists of two long 2D arrays and one int 2D array (fo
  32-47	Metadata 1				=	Interpretation of this is based on tile type
  48-63	Metadata 2				=	Interpretation of this is based on tile type. DO NOT CHANGE THIS AT RUNTIME!!!
  
- - Second long array (Reset to clean) -
+ - Second long array (Reset to clean state) -
  0-7	Floor/ceiling texture
  8-15	Light level
  16-23	Wall type/shape
