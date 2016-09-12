@@ -63,6 +63,7 @@ public class Caster {
 	protected RenderWindow screen;
 	protected Dimension dim;
 	protected IndexColorModel playpal;
+	protected byte[][][] alpha;
 	protected byte[][] lightMap, transMap, fogMap, redMap, xorMap, additiveMap, subtractiveMap, multiplyMap, hueshiftMap, desarurateMap;
 	protected byte[] negativeMap, grayscaleMap, redscaleMap;
 	public Input input;
@@ -118,6 +119,7 @@ public class Caster {
 		negativeMap = Palette.getNegativeMap();
 		grayscaleMap = Palette.getGrayscaleMap();
 		redscaleMap = Palette.getRedscaleMap();
+		alpha = Palette.getAlpha();
 
 		// Initialize screen column to camera-relative X coordinate LUT
 		camXLookup = new double[dim.width];
@@ -180,13 +182,28 @@ public class Caster {
 
 		testSprites = new Sprite[] {
 				new Sprite(loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, FIXMULTI, FIXMULTI / 2, -FIXMULTI / 2, 0, 1),
-				new Sprite(loader.getTexture("test"), false, 255, null, transMap, FIXMULTI * 2, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("test"), false, 255, null, /* transMap */null, FIXMULTI * 2, FIXMULTI, 0, 3, 1),
 				new Sprite(loader.getTexture("test3"), true, 255, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/cheese"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/cheese2"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/medkit"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/heartstart"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 3, 1),
+				new Sprite(loader.getTexture("pickup/battery"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/battery2"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/pencil"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/pencil2"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/bullets"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/bullets2"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/magic"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 2, 1),
+				new Sprite(loader.getTexture("bomb/fuse0-0"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 1, 1),
 				new Sprite(
 						new Texture[] { loader.getTexture("x/0"), loader.getTexture("x/1"), loader.getTexture("x/2"), loader.getTexture("x/3"),
 								loader.getTexture("x/4"), loader.getTexture("x/5"), loader.getTexture("x/6"), loader.getTexture("x/7") },
 						true, 255, null, additiveMap, FIXMULTI, FIXMULTI, 0, 1, 4) };
-		testSpritesPos = new Position[] { new Position(10, 10.75), new Position(2.3, 4.5), new Position(2.5, 10.5), new Position(20, 10.5) };
+		testSpritesPos = new Position[] { new Position(10, 10.75), new Position(2.3, 4.5), new Position(2.5, 10.5), new Position(18.5, 15.5),
+				new Position(17.5, 15.5),
+				new Position(17.5, 17.5), new Position(20.5, 16.5), new Position(19.5, 15.5), new Position(18.5, 14.5), new Position(20, 13.5),
+				new Position(18, 12.75), new Position(16, 13.75), new Position(16, 14.75), new Position(16.5, 16.5), new Position(10.5, 15.5), new Position(20, 10.5) };
 	}
 
 	public boolean doQuit() {
@@ -675,6 +692,54 @@ public class Caster {
 						texPos += texRatio;
 					}
 					break;
+				case 0x20: // Lighted, no color tables, metamode 2
+				case 0x24: // Lighted, 2d color table(ignored, metamode 2
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = (texData[texX][texY]) & 0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = alpha[(metaData[texX][texY]>>>3)&0x1F][lightMap[light][texel] & 0xFF][buffer[drawPointer] & 0xFF];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				case 0x21: // Fullbright, no color tables, metamode 2
+				case 0x25: // Fullbright, 2d color table(ignored, metamode 2
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = (texData[texX][texY]) & 0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = alpha[(metaData[texX][texY]>>>3)&0x1F][texel][buffer[drawPointer] & 0xFF];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				case 0x22: // Lighted, 1d color table, metamode 2
+				case 0x26: // Lighted, 1d color table, 2d color table(ignored, metamode 2
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = ((int)coltab1d[(int)(texData[texX][texY]) & 0xFF])&0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = alpha[(metaData[texX][texY]>>>3)&0x1F][lightMap[light][texel] & 0xFF][buffer[drawPointer] & 0xFF];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
+				case 0x23: // Fullbright, 1d color tables, metamode 2
+				case 0x27: // Fullbright, 1d color tables, 2d color table(ignored, metamode 2
+					while (texPos < stop && drawPointer < buffer.length) {
+						int texY = ((texPos) >> 16) & texMask;
+						int texel = ((int)coltab1d[(int)(texData[texX][texY]) & 0xFF])&0xFF;
+						if (texel != 0)
+							buffer[drawPointer] = alpha[(metaData[texX][texY]>>>3)&0x1F][texel][buffer[drawPointer] & 0xFF];
+
+						drawPointer += w;
+						texPos += texRatio;
+					}
+					break;
 				case 0x30: // Lighted, no color tables, metamode 3
 					while (texPos < stop && drawPointer < buffer.length) {
 						int texY = ((texPos) >> 16) & texMask;
@@ -689,7 +754,7 @@ public class Caster {
 				case 0x32: // Lighted, 1d color table, metamode 3
 					while (texPos < stop && drawPointer < buffer.length) {
 						int texY = ((texPos) >> 16) & texMask;
-						int texel =  coltab1d[(int) (texData[texX][((texPos) >> 16) & texMask]) & 0xFF] & 0xFF;
+						int texel = coltab1d[(int) (texData[texX][((texPos) >> 16) & texMask]) & 0xFF] & 0xFF;
 						if (texel != 0)
 							buffer[drawPointer] = lightMap[min(light + (((int) metaData[texX][texY]) & 0xFF), 0xFF)][texel];
 
@@ -708,7 +773,6 @@ public class Caster {
 						texPos += texRatio;
 					}
 					break;
-				// TODO: Implement the other metamodes
 				}
 
 			}

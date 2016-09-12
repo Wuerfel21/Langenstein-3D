@@ -85,11 +85,23 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
     A sphere of magical energy that can be shot. Projectile, uses magic energy, very magic, alignment affects damage.
 
  -- Powerup/piclup ideas --
-  Handk�se (Hand cheese):
+  Handkäse (Hand cheese):
     Restores some health.
+    
+  Handkäse mit Musik (Hand cheese with music):
+    Restores some health. Can push health beyond 100%
 
   First aid kit (Verbandskasten):
-    Restores some health.
+    Restores some more health.
+    
+  Defibrillator:
+  	Restores lots of health and some battery power
+  	
+  Round Battery:
+  	Adds some battery power. It is still huge.
+  	
+  Car Battery:
+  	Adds some more battery power.
 
   Mod chip:
     Temporarily upgrades tech weapons (like the tome of power from Heretic)

@@ -10,13 +10,15 @@ import static java.lang.Math.min;
  * @author Wuerfel_21
  */
 public abstract class Palette {
+
 	private static IndexColorModel playpal = null;
+	private static byte[][][] alpha;
 	private static byte[][] lightMap, transMap, fogMap, redMap, xorMap, additiveMap, subtractiveMap, multiplyMap, hueshiftMap, desarurateMap;
 	private static byte[] negativeMap, grayscaleMap, redscaleMap;
 	private static byte[] rampMap;
 	private static int[] col_diff;
-	
-	public static final float hue256th = 360f/256f;
+
+	public static final float hue256th = 360f / 256f;
 
 	public static IndexColorModel get() {
 		if (playpal == null) {
@@ -90,14 +92,14 @@ public abstract class Palette {
 		}
 		return subtractiveMap;
 	}
-	
+
 	public static byte[][] getHueshiftMap() {
 		if (hueshiftMap == null) {
 			hueshiftMap = generateHueshiftTable2d();
 		}
 		return hueshiftMap;
 	}
-	
+
 	public static byte[][] getDesaturateMap() {
 		if (desarurateMap == null) {
 			desarurateMap = generateDesaturateTable();
@@ -124,6 +126,13 @@ public abstract class Palette {
 			redscaleMap = generateRedscaleTable();
 		}
 		return redscaleMap;
+	}
+	
+	public static byte[][][] getAlpha() {
+		if (alpha == null) {
+			alpha = generateAlphaTables();
+		}
+		return alpha;
 	}
 
 	/**
@@ -219,14 +228,14 @@ public abstract class Palette {
 
 		return table;
 	}
-	
+
 	private static byte[][] generateHueshiftTable2d() {
 		byte[][] table = new byte[256][];
-		
-		for (int i=0;i<256;i++) {
-			table[i] = generateHueshiftTable(hue256th*i);
+
+		for (int i = 0; i < 256; i++) {
+			table[i] = generateHueshiftTable(hue256th * i);
 		}
-		
+
 		return table;
 	}
 
@@ -234,14 +243,13 @@ public abstract class Palette {
 		byte[] table = new byte[256];
 
 		for (int x = 1; x < 256; x++) {
-				float[] hsv = rgb_to_hsv(extendColor(playpal_vga[x][0]), extendColor(playpal_vga[x][1]), extendColor(playpal_vga[x][2]));
-				int[] rgb = hsv_to_rgb(hsv[0] + shift, hsv[1], hsv[2]);
-				table[x] = bestfit_color(reduceColor(rgb[0]), reduceColor(rgb[1]), reduceColor(rgb[2]), default_discourage);
+			float[] hsv = rgb_to_hsv(extendColor(playpal_vga[x][0]), extendColor(playpal_vga[x][1]), extendColor(playpal_vga[x][2]));
+			int[] rgb = hsv_to_rgb(hsv[0] + shift, hsv[1], hsv[2]);
+			table[x] = bestfit_color(reduceColor(rgb[0]), reduceColor(rgb[1]), reduceColor(rgb[2]), default_discourage);
 		}
 		return table;
 	}
 
-	
 	private static byte[][] generateDesaturateTable() {
 		byte[][] table = new byte[256][256];
 
@@ -250,16 +258,16 @@ public abstract class Palette {
 			table[i][0] = 0;
 		}
 		for (int x = 0; x < 255; x++) {
-			float fract = (1/256f) * x;
+			float fract = (1 / 256f) * x;
 			for (int y = 1; y < 256; y++) {
 				float[] hsv = rgb_to_hsv(extendColor(playpal_vga[y][0]), extendColor(playpal_vga[y][1]), extendColor(playpal_vga[y][2]));
-				int[] rgb = hsv_to_rgb(hsv[0], hsv[1]*fract, hsv[2]);
+				int[] rgb = hsv_to_rgb(hsv[0], hsv[1] * fract, hsv[2]);
 				table[x][y] = bestfit_color(reduceColor(rgb[0]), reduceColor(rgb[1]), reduceColor(rgb[2]), default_discourage);
 			}
 		}
 		return table;
 	}
-	
+
 	private static byte[][] generateAdditiveTable() {
 		byte[][] table = new byte[256][256];
 
@@ -354,6 +362,24 @@ public abstract class Palette {
 			int r = Math.min(63, gray);
 			int gb = Math.max(0, gray - 63);
 			table[i] = bestfit_color(r, gb, gb, redscale_discourage);
+		}
+		return table;
+	}
+
+	private static byte[][][] generateAlphaTables() {
+		byte[][][] table = new byte[32][][];
+		int solid = 8;
+		for (int i = 1; i < 31; i++) {
+			table[i] = generateTransTable(solid, solid, solid);
+			solid += 8;
+		}
+		table[0] = new byte[256][256];
+		table[31] = new byte[256][256];
+		for (int i = 0; i < 256; i++) {
+			for (int j = 0; j < 256; j++) {
+				table[0][i][j] = (byte) j;
+				table[31][i][j] = (byte) i;
+			}
 		}
 		return table;
 	}

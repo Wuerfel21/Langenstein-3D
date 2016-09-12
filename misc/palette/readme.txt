@@ -9,7 +9,10 @@ metapal1:
 	Blue	:	Lighted, 1D colormap
 	Green	:	Lighted, 2D colormap
 	Cyan	:	Lighted, both colormaps
-	Red	:	Fullbright, no colormaps
+	Red		:	Fullbright, no colormaps
 	Magenta	:	Fullbright, 1D colormap
 	Yellow	:	Fullbright, 2D colormap
 	White	:	Fullbright, both colormaps
+	
+grayscale:
+	256 shades of grey! Useful for mode 2/3 metatextures.
