@@ -157,7 +157,7 @@ public class Caster {
 		Loader loader = Loader.getInternalloader(); // TODO: Get a proper Loader
 
 		textures[1] = loader.getTexture("dhgWall/clean").data;
-		textures[2] = loader.getTexture("brkWall0/plate").data;
+		textures[2] = loader.getTexture("checker/blackwhite/big").data;
 		textures[5] = loader.getTexture("brkWall0/normal").data;
 		textures[6] = loader.getTexture("carpet/0").data;
 		textures[8] = loader.getTexture("dhgWall/cross").data;

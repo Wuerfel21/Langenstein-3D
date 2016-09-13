@@ -11,7 +11,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.GameConstants;
 
 /**
  * @author Wuerfel_21

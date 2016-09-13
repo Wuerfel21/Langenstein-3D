@@ -660,8 +660,8 @@ public abstract class Palette {
 		    {   H, 1.5,  25, 1.3, 1.5,   H, 1.2,   H,1.65,   1,   H, 1.1,   H,   H}, //blue
 		    {   H, 1.5,  18,   H,   H,   H, 1.2, 1.3, 1.4,   H,   1, 1.1,   H,1.75}, //off-green
 		    {   H, 1.5,   5,   H,   H,   H, 1.3,   H,   H,   H,   H,   1,   H,   H}, //red
-		    {   H, 1.5,  12,   H,   H,   3, 1.2,   H,   H,   H,   6, 1.1,   1,   H}, //yellow-green-ish something
-		    {   H, 1.5,  10, 1.2,   H,   H, 1.2,   H,   H, 1.2,   H,   H,   H,   1}, //cyan
+		    {   H, 1.5,  12,   H,1.55,   3, 1.2,   H,   H,   H,   6, 1.1,   1,   H}, //yellow-green-ish something
+		    {   H, 1.5,  10, 1.2,   H,   H, 1.2,   H,   H, 1.2,   H, 1.5,   H,   1}, //cyan
 		};
 	    
 	    public static final byte[][] playpal_vga = {

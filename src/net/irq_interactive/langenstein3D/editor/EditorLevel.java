@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 import com.google.common.io.LittleEndianDataOutputStream;
 
-import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.GameConstants;
 
 /**
  * @author Wuerfel_21

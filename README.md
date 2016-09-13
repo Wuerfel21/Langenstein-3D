@@ -4,7 +4,8 @@
 Langenstein 3D is a retro-style FPS game, written in Java. It is supposed to look, sound and play like a game from the early 90's. That means 256-color pseudo 3D graphics, MIDI Metal soundtrack, health pickups, secrets, labyrinth-like levels, 2D sprites as enemies/objects and more.
 
 ### How the hell do i build this?
-Just clone this repo into a Eclipse Workspace of your choice (make sure you call the project "Langenstein 3D", NOT "Langenstein-3D"!!!!), and hit Run!
+First, make sure git is installed and in your path.
+Then just clone this repo into a Eclipse Workspace of your choice (make sure you call the project "Langenstein-3D")
 You can also export to a jar, but this is usually unnecessary.
 
 ### Oh wise master, how shall I contribute?

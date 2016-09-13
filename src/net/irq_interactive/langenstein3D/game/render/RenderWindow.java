@@ -17,7 +17,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.GameConstants;
 import net.irq_interactive.langenstein3D.game.Loader;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType;

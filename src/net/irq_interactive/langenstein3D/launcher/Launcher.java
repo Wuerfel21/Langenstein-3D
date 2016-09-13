@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import net.irq_interactive.langenstein3D.game.GameConstants;
+import net.irq_interactive.langenstein3D.GameConstants;
 import net.irq_interactive.langenstein3D.game.Loader;
 import net.irq_interactive.langenstein3D.launcher.Launcher.StartButtonListener.NumberLock;
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Langenstein-3D" default="default">
+	<description>
+            A retro style FPS
+    </description>
+	<target name="default" description="A retro style FPS">
+		<fail message="This is a stub build script that just generates a version file!" />
+	</target>
+
+	<target name="genversion">
+		<exec executable="git" outputproperty="vers-desc">
+			<arg value="describe" />
+			<arg value="--tags" />
+			<arg value="--always" />
+			<arg value="--dirty" />
+		</exec>
+		<exec executable="git" outputproperty="vers-hash">
+					<arg value="rev-parse" />
+					<arg value="--short=15" />
+					<arg value="HEAD" />
+				</exec>
+		<echo file="src/net/irq_interactive/langenstein3D/derived/Version.java">package net.irq_interactive.langenstein3D.derived;
+public final class Version {
+private Version() {}
+public static final String version = "${vers-desc}";
+public static final long hash = 0x${vers-hash}l;
+}</echo>
+	</target>
+	
+	<target name="cleanversion">
+	<delete file="src/net/irq_interactive/langenstein3D/derived/Version.java"></delete>
+	</target>
+
+</project>
