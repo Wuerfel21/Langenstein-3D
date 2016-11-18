@@ -1,10 +1,14 @@
 package net.irq_interactive.langenstein3D.game.audio;
 
-import javax.sound.midi.*;
+import java.io.BufferedInputStream;
+
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.Soundbank;
+import javax.sound.midi.Synthesizer;
 
 import net.irq_interactive.langenstein3D.game.Loader;
-
-import java.io.BufferedInputStream;
 
 public class MusicPlayer {
 	private Sequencer player;

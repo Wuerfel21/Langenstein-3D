@@ -18,6 +18,8 @@ public final strictfp class FixedPoint {
 	public static final double ANGTORAD = (1/0x100000000l)*StrictMath.PI;
 
 	public static final int MAX_VALUE = 0x7FFFFFFF;
+	
+	public static final int MAX_FRACT = 0x7FFF;
 
 	public static final int intToFix(int i) {
 		return i << 16;

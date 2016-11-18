@@ -3,10 +3,8 @@
  */
 package net.irq_interactive.langenstein3D.game.render;
 
-import static net.irq_interactive.langenstein3D.game.render.Caster.texFixShift;
 import static net.irq_interactive.langenstein3D.game.render.Caster.texMask;
 import static net.irq_interactive.langenstein3D.game.render.Caster.texSize;
-import static net.irq_interactive.langenstein3D.game.render.Caster.texWrapBit;
 
 import java.util.Arrays;
 
@@ -16,7 +14,6 @@ import java.util.Arrays;
  * @author Wuerfel_21
  *
  */
-@SuppressWarnings("unused")
 public class Texture {
 	/**
 	 * Holds the texture data

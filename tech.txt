@@ -31,22 +31,22 @@ Screen/textures:
 
  -- Level Format --
 The runtime level format consists of two long 2D arrays and one int 2D array (for better cache usage) the size of the map:
- - First int array -
+ - First int array: map0 -
  0-7	Floor/ceiling texture	=	Texture for the floor and ceiling in this tile. If the tile is completly filled with a wall, this can be used as extra metadata
  8-15	Light level				=	Light level of the tile, used for this tiles floor/ceiling and adjacent walls with the self-lighted bit unset
  16-23	Tile type/Wall shape	=	Type of tile in this tile
  24-30	Tag						=	Used to reference groups of tiles. DO NOT CHANGE THIS AT RUNTIME!!1!!!!!!!!!!!!einself!!!!!!one!!!!!!!eleven!!!!!!!onehundredeleven!!1
  31		Static Lighting			=	If set, the light level is not altered based on distance
 
- - First long array (Runtime) -
- 0		Self-Lighted			=	If set, walls in this tile will not use the light level of adjacent tiles
+ - First long array (Runtime): map1 -
+ 0		Self-Lighted			=	If set, walls on the edge of this tile will not use the light level of adjacent tiles
  1-7	Reserved 1				=	Reserved, set to 0
  8-15	Wall texture			=	Texture for the wall in this tile. If the tile does not contain a wall, this can be used as extra metadata
  16-31	Runtime data			=	Reserved for state variables(although other fields can be used for that,too). Initialized to 0
  32-47	Metadata 1				=	Interpretation of this is based on tile type
  48-63	Metadata 2				=	Interpretation of this is based on tile type. DO NOT CHANGE THIS AT RUNTIME!!!
  
- - Second long array (Reset to clean state) -
+ - Second long array (Reset to clean state): map2 -
  0-7	Floor/ceiling texture
  8-15	Light level
  16-23	Wall type/shape
@@ -61,13 +61,15 @@ The runtime level format consists of two long 2D arrays and one int 2D array (fo
 The int array contains data that is relevant when searching/scanning the map (e.g. raycasting, floorcastng, finding tagged tiles), whereas
 data in the first long array is usually accessed specifically. The second long array is used to reset the other two, in case of a game over.
 
-The on-disk level format is a stream of unsigned little-endian values, starting with a header which is followed by xsize*ysize tiles, x primary (e.g. x+(y*xsize)):
+The on-disk level format is a stream of unsigned(?) big-endian values, starting with a header which is followed by xsize*ysize tiles, x primary (e.g. x+(y*xsize)):
 
  - Header -
  int	magic					=	Magic Number, 0x22022001
  short	version					=	Level format version. If not 0x0000, a newer format version is used, loading should be stopped.
  short	xsize					=	Level size in the X Dimension
  short	ysize					=	Level size in the Y Dimension
+ short  centrx					=	Level center tile X
+ short  centry					=	Level center tile y
  
  - Tile -
  byte	Floor/ceiling texture
@@ -77,4 +79,27 @@ The on-disk level format is a stream of unsigned little-endian values, starting 
  byte	Bitfield 1				=	bit 0-6 = Reserved 1; bit 7 = Static Lighting
  byte	Bitfield 2				=	bit 0-6 = Reserved 2; bit 7 = Self-Lighted
  short	Metadata 1
+ short	Metadata 2
  byte	Tag
+
+ -- Input format --
+Player input is stored as a 64 bit long
+
+0-31	rotation delta, as a fraction of a full clockwise (looking from above) rotation. counterclockwise rotation is achieved by overflowing.
+32-39	weapon change, as the weapon id to change to. 0xFF means no change
+40		fire
+41		use
+42		move forward
+43		move backward
+44		strafe left
+45		strafe right
+46		sprint
+47		sneak
+48		alt fire
+49		auxiliary 1
+50		auxiliary 2
+51		auxiliary up
+52		auxiliary down
+53		auxiliary left
+54		auxiliary right
+55-63	reserved, set to 0

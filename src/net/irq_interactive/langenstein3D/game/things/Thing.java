@@ -4,6 +4,7 @@
 package net.irq_interactive.langenstein3D.game.things;
 
 import net.irq_interactive.langenstein3D.FixedPoint;
+import net.irq_interactive.langenstein3D.game.FinalInt2D;
 import net.irq_interactive.langenstein3D.game.Int2D;
 
 /**
@@ -63,22 +64,41 @@ public abstract strictfp class Thing {
 		this.y = y;
 	}
 	
-	public Int2D getXY() {
+	public FinalInt2D getXY() {
 		return new Int2D(x, y);
 	}
 	
-	public void setXY(Int2D xy) {
+	public void setXY(FinalInt2D xy) {
 		this.x = xy.x;
 		this.y = xy.y;
 	}
 	
+	public int getZ() { // Z is for moving up/down, which most things don't do.
+		return 0;
+	}
+	
+	public void setZ(){};
+	
 	public double getXfp() {
-		return FixedPoint.fixToDouble(x);
+		return FixedPoint.fixToDouble(getX());
 	}
 
 	public double getYfp() {
-		return FixedPoint.fixToDouble(y);
+		return FixedPoint.fixToDouble(getY());
 	}
+	
+	public double getZfp() {
+		return FixedPoint.fixToDouble(getZ());
+	}
+	
+	public abstract int getRadius();
+	
+	/**
+	 * Returns whether this Thing is "virtual", e.g. not related to actual gameplay, instead serving a utility purpose.
+	 * Virtual things will neither be rendered nor be checked for collision and such.
+	 * @return
+	 */
+	public abstract boolean isVirtual();
 
 	
 }

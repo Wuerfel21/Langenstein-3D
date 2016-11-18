@@ -12,13 +12,21 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.ImageCapabilities;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import net.irq_interactive.langenstein3D.GameConstants;
 import net.irq_interactive.langenstein3D.game.Loader;
+import net.irq_interactive.langenstein3D.game.io.GlobalKeyListenerAdapter;
+import net.irq_interactive.langenstein3D.game.io.InputHandler;
+import net.irq_interactive.langenstein3D.game.io.KeyboardMouse;
+import net.irq_interactive.langenstein3D.game.io.LocalInput;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities;
 import sun.java2d.pipe.hw.ExtendedBufferCapabilities.VSyncType;
 
@@ -38,6 +46,9 @@ public class RenderWindow extends JFrame {
 	protected GraphicsEnvironment env;
 	protected GraphicsDevice dev;
 	protected GraphicsConfiguration conf;
+	
+	protected KeyboardMouse kbm;
+	protected LocalInput loc;
 	
 	public RenderWindow(Dimension d, boolean fullscreen) {
 		super(GameConstants.GAME + " " + GameConstants.VERSION);
@@ -73,6 +84,16 @@ public class RenderWindow extends JFrame {
 		}
 		strategy = canvas.getBufferStrategy();
 		System.out.println(strategy.getCapabilities().isPageFlipping());
+		
+		kbm = new KeyboardMouse(0);
+		loc = new LocalInput();
+		List<KeyListener> keyListeners = new ArrayList<>(2);
+		keyListeners.add(kbm);
+		keyListeners.add(loc);
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+	    manager.addKeyEventDispatcher(new GlobalKeyListenerAdapter(keyListeners));
+	    canvas.addMouseListener(kbm);
+	    canvas.addMouseMotionListener(kbm);
 	}
 	
 	public void showFrame(BufferedImage frame) {
@@ -81,6 +102,10 @@ public class RenderWindow extends JFrame {
 		if(!strategy.contentsLost())
 			strategy.show();
 		graph.dispose();
+	}
+	
+	public InputHandler getInputHandler(int player){
+		return player==0?kbm:null;
 	}
 	
 }

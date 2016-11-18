@@ -1,36 +1,41 @@
 package net.irq_interactive.langenstein3D.game.render;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.System.out;
+import static net.irq_interactive.langenstein3D.FixedPoint.FIXMULTI;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.image.*;
-import javax.swing.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 
 import net.irq_interactive.langenstein3D.FixedPoint;
-import net.irq_interactive.langenstein3D.game.Input;
 import net.irq_interactive.langenstein3D.game.Int2D;
 import net.irq_interactive.langenstein3D.game.Loader;
 import net.irq_interactive.langenstein3D.game.Position;
 import net.irq_interactive.langenstein3D.game.Vector;
-import net.irq_interactive.langenstein3D.game.Input.Keys;
+import net.irq_interactive.langenstein3D.game.io.InputHandler;
+import net.irq_interactive.langenstein3D.game.io.InputUtil;
+import net.irq_interactive.langenstein3D.game.io.LocalInput;
 import net.irq_interactive.langenstein3D.game.render.VisSprite.ZComparator;
-
-import javax.imageio.ImageIO;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.sin;
-import static java.lang.Math.cos;
-import static java.lang.Math.min;
-import static java.lang.Math.max;
-import static java.lang.Math.abs;
-import static java.lang.Math.PI;
-import static java.lang.System.out;
-import static net.irq_interactive.langenstein3D.FixedPoint.FIXMULTI;
 
 /**
  * This class handles raycasting and misc rendering. Currently it also contains game logic, but this will be moved out later.
@@ -49,7 +54,7 @@ public class Caster {
 	 *
 	 */
 	protected enum SDDAState {
-		REGULAR, THINWALL
+		gunk
 	}
 
 	public static final int texWrapBit = 6;
@@ -66,7 +71,7 @@ public class Caster {
 	protected byte[][][] alpha;
 	protected byte[][] lightMap, transMap, fogMap, redMap, xorMap, additiveMap, subtractiveMap, multiplyMap, hueshiftMap, desarurateMap;
 	protected byte[] negativeMap, grayscaleMap, redscaleMap;
-	public Input input;
+	public InputHandler input;
 	protected BufferedImage cursorImg;
 	public Cursor blankCursor;
 	public JLabel fpsLabel;
@@ -137,13 +142,10 @@ public class Caster {
 		vissprites = new ArrayList<VisSprite>(64); // 64 should be enough to not cause immense lag on level start
 
 		// Initialize Inputs
-		input = new Input();
-		screen.addKeyListener(input); // TODO: Move all this somewhere else
-		screen.canvas.addKeyListener(input);
-		screen.canvas.addMouseMotionListener(input);
+		input = screen.getInputHandler(0);
 
 		// Generate Textures
-		textures = new byte[17][texSize][texSize];
+		textures = new byte[20][texSize][texSize];
 		for (int x = 0; x < texSize; x++) {
 			for (int y = 0; y < texSize; y++) {
 				textures[0][x][y] = (byte) 0;
@@ -169,6 +171,9 @@ public class Caster {
 		textures[14] = loader.getTexture("brkWall0/tiny").data;
 		textures[15] = loader.getTexture("brkWall0/huge").data;
 		textures[16] = loader.getTexture("brkWall0/big").data;
+		textures[17] = loader.getTexture("checker/blackwhite/huge0").data;
+		textures[18] = loader.getTexture("checker/blackwhite/huge1").data;
+		textures[19] = loader.getTexture("checker/redwhite/huge").data;
 
 		// Hide mouse cursor
 		// Transparent 16 x 16 pixel cursor image.
@@ -402,6 +407,7 @@ public class Caster {
 					// final int floorTexture = (((int)currentFloorX +
 					// (int)currentFloorY)&1)!=0?1:2;
 					final int floorTexture = (map[(int) currentFloorX][(int) currentFloorY] - 2) & 0x7;
+					final int ceilingTexture = ((((int) currentFloorX)^((int) currentFloorY))&1)!=0?18:((int) currentFloorX)>23?19:17;
 
 					final int floorTexX = (int) (currentFloorX * texSize) & texMask;
 					final int floorTexY = (int) (currentFloorY * texSize) & texMask;
@@ -411,7 +417,7 @@ public class Caster {
 					// floor
 					buffer[x + (y * w)] = lightMap[light][(int) (textures[floorTexture][floorTexX][floorTexY]) & 0xFF];
 					// ceiling (symmetrical!)
-					buffer[x + ((h - y - 1) * w)] = lightMap[light][(int) (textures[2][floorTexX][floorTexY]) & 0xFF];
+					buffer[x + ((h - y - 1) * w)] = lightMap[light][(int) (textures[ceilingTexture][floorTexX][floorTexY]) & 0xFF];
 				}
 			}
 		}
@@ -804,54 +810,44 @@ public class Caster {
 		final int w = dim.width;
 		final int h = dim.height;
 		// speed modifiers
-		double moveSpeed = (1 / 35f)/* frameTime */ * 5.0; // the constant value is in
+		double moveSpeed = (1 / 35f)* 5.0; // the constant value is in
 		// squares/second
-		double rotSpeed = (1 / 35f)/* frameTime */ * 3.0; // the constant value is in
-		// radians/second
-		if (input.isPressed(Keys.SPRINT))
+		
+		long in = input.getInput();
+		
+		if (InputUtil.Keys.SPRINT.isPressed(in))
 			moveSpeed *= 2;
 
 		// move forward if no wall in front of you
-		if (input.isPressed(Keys.FORWARD)) {
+		if (InputUtil.Keys.FORWARD.isPressed(in)) {
 			if (map[(int) (pos.x + dir.x * moveSpeed)][(int) (pos.y)] == 0)
 				pos.x += dir.x * moveSpeed;
 			if (map[(int) (pos.x)][(int) (pos.y + dir.y * moveSpeed)] == 0)
 				pos.y += dir.y * moveSpeed;
 		}
 		// move backwards if no wall behind you
-		if (input.isPressed(Keys.BACKWARD)) {
+		if (InputUtil.Keys.BACKWARD.isPressed(in)) {
 			if (map[(int) (pos.x - dir.x * moveSpeed)][(int) (pos.y)] == 0)
 				pos.x -= dir.x * moveSpeed;
 			if (map[(int) (pos.x)][(int) (pos.y - dir.y * moveSpeed)] == 0)
 				pos.y -= dir.y * moveSpeed;
 		}
 
-		if (input.isPressed(Keys.RIGHT)) {
+		if (InputUtil.Keys.RIGHT.isPressed(in)) {
 			if (map[(int) (pos.x + dir.y * moveSpeed)][(int) (pos.y)] == 0)
 				pos.x += dir.y * moveSpeed;
 			if (map[(int) (pos.x)][(int) (pos.y - dir.x * moveSpeed)] == 0)
 				pos.y -= dir.x * moveSpeed;
 		}
 
-		if (input.isPressed(Keys.LEFT)) {
+		if (InputUtil.Keys.LEFT.isPressed(in)) {
 			if (map[(int) (pos.x - dir.y * moveSpeed)][(int) (pos.y)] == 0)
 				pos.x -= dir.y * moveSpeed;
 			if (map[(int) (pos.x)][(int) (pos.y + dir.x * moveSpeed)] == 0)
 				pos.y += dir.x * moveSpeed;
 		}
-
-		// Get mouse input
-		Vector mouseRel = input.getMouseRelative();
-		Int2D mouseAbs = input.getMouseAbsolute();
-		// out.println("Mouse Relative! X:"+mouseRel.x+" Y:"+mouseRel.y+"\nMouse
-		// Absolute! X: "+mouseAbs.x+" Y:"+mouseAbs.y);
-		double rotAmount = -mouseRel.x / 100;
-		// rotate to the right
-		if (input.isPressed(Keys.TRIGHT))
-			rotAmount -= rotSpeed;
-		// rotate to the left
-		if (input.isPressed(Keys.TLEFT))
-			rotAmount += rotSpeed;
+		
+		double rotAmount = -InputUtil.getRotationRadians(in);
 		if (rotAmount != 0) {
 			// both camera direction and camera plane must be rotated
 			double oldDirX = dir.x;
@@ -862,7 +858,7 @@ public class Caster {
 			plane.y = oldPlaneX * sin(rotAmount) + plane.y * cos(rotAmount);
 		}
 		// Take Screenshot
-		if (input.isScreenshot()) {
+		if (LocalInput.screenshotPending()) {
 			try {
 				ImageIO.write(bufferImg, "png",
 						new File("screenshot " + Long.toHexString(System.currentTimeMillis()) + ".png"));
@@ -873,7 +869,7 @@ public class Caster {
 		}
 
 		// Exit?
-		if (input.isPressed(Input.Keys.EXIT))
+		if (LocalInput.escapePending())
 			state = CasterState.QUIT;
 
 	}

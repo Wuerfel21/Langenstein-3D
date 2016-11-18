@@ -1,8 +1,10 @@
 package net.irq_interactive.langenstein3D.game.render;
 
-import java.awt.image.*;
-import java.util.Arrays;
 import static java.lang.Math.min;
+
+import java.awt.image.DataBuffer;
+import java.awt.image.IndexColorModel;
+import java.util.Arrays;
 
 /**
  * Palette Definition, ported from a previous attempt of 3D. In Allegro format e.g. 6 bits per channel.

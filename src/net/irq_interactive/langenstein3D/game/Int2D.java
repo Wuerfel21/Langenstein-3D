@@ -5,39 +5,37 @@ package net.irq_interactive.langenstein3D.game;
  * 
  * @author Wuerfel_21
  */
-public class Int2D {
-	public int x, y;
-
+public class Int2D extends FinalInt2D {
+	
+	public int x;
+	public int y;
+	
 	/**
-	 * Create a new unitialized Int2D.
+	 * Create a new initialized Int2D.
 	 */
 	public Int2D() {
+		super(0,0);
 		// void constructor
 	}
+	
 
-	/**
-	 * Create a new Int2D from 2 ints.
-	 */
-	public Int2D(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	/**
-	 * Create a new Int2D from another Int2D.
-	 */
-	public Int2D(Int2D i2d) {
-		this.x = i2d.x;
-		this.y = i2d.y;
-	}
-
-	/**
-	 * Create a new Int2D by casting a DoubleXY.
-	 */
 	public Int2D(DoubleXY d) {
-		this.x = (int) d.x;
-		this.y = (int) d.y;
+		super(d);
+		// TODO Auto-generated constructor stub
 	}
+
+
+	public Int2D(FinalInt2D i2d) {
+		super(i2d);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	public Int2D(int x, int y) {
+		super(x, y);
+		// TODO Auto-generated constructor stub
+	}
+
 
 	public void set(int x, int y) {
 		this.x = x;
@@ -52,20 +50,5 @@ public class Int2D {
 	public void set(DoubleXY d) {
 		this.x = (int) d.x;
 		this.y = (int) d.y;
-	}
-
-	public boolean equals(Int2D i) {
-		return i.x == x && i.y == y;
-	}
-
-	/**
-	 * Create a new Int2D from this one.
-	 */
-	public Int2D copy() {
-		return new Int2D(this);
-	}
-	
-	public String toString() {
-		return Integer.toString(x)+";"+Integer.toString(y);
 	}
 }
