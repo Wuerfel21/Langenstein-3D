@@ -11,11 +11,8 @@ import static java.lang.System.out;
 import static net.irq_interactive.langenstein3D.FixedPoint.FIXMULTI;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.IndexColorModel;
@@ -28,9 +25,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 import net.irq_interactive.langenstein3D.FixedPoint;
+import net.irq_interactive.langenstein3D.alpha.ExampleFactory;
 import net.irq_interactive.langenstein3D.game.Int2D;
 import net.irq_interactive.langenstein3D.game.Loader;
 import net.irq_interactive.langenstein3D.game.Position;
+import net.irq_interactive.langenstein3D.game.Tileset;
 import net.irq_interactive.langenstein3D.game.Vector;
 import net.irq_interactive.langenstein3D.game.io.InputHandler;
 import net.irq_interactive.langenstein3D.game.io.InputUtil;
@@ -72,8 +71,6 @@ public class Caster {
 	protected byte[][] lightMap, transMap, fogMap, redMap, xorMap, additiveMap, subtractiveMap, multiplyMap, hueshiftMap, desarurateMap;
 	protected byte[] negativeMap, grayscaleMap, redscaleMap;
 	public InputHandler input;
-	protected BufferedImage cursorImg;
-	public Cursor blankCursor;
 	public JLabel fpsLabel;
 	public JLabel maxZLabel;
 	protected double frameTime;
@@ -88,7 +85,7 @@ public class Caster {
 	protected double maxZ;
 	protected static final ZComparator zComparator = new VisSprite.ZComparator();
 
-	public byte[][][] textures;
+	public Tileset tileset;
 
 	protected Position pos; // player position
 	protected long time, oldTime, frame = 0;
@@ -144,47 +141,9 @@ public class Caster {
 		// Initialize Inputs
 		input = screen.getInputHandler(0);
 
-		// Generate Textures
-		textures = new byte[20][texSize][texSize];
-		for (int x = 0; x < texSize; x++) {
-			for (int y = 0; y < texSize; y++) {
-				textures[0][x][y] = (byte) 0;
-				// textures[2][x][y] = (byte) ((x != y && x != texSize - y) ? 9 : 1);
-				textures[3][x][y] = (byte) max(1, x + (y * texSize));
-				textures[4][x][y] = (byte) (209 + (y >> 2));
-				// textures[5][x][y] = (byte) max(1, x + y);
-				textures[7][x][y] = (byte) ((x & y) != 0 ? 1 : 15);
-			}
-		}
-		Loader loader = Loader.getInternalloader(); // TODO: Get a proper Loader
-
-		textures[1] = loader.getTexture("dhgWall/clean").data;
-		textures[2] = loader.getTexture("checker/blackwhite/big").data;
-		textures[5] = loader.getTexture("brkWall0/normal").data;
-		textures[6] = loader.getTexture("carpet/0").data;
-		textures[8] = loader.getTexture("dhgWall/cross").data;
-		textures[9] = loader.getTexture("dhgWall/crossBlood").data;
-		textures[10] = loader.getTexture("dhgWall/blood0").data;
-		textures[11] = loader.getTexture("dhgWall/dirty0").data;
-		textures[12] = loader.getTexture("dhgWall/dirty1").data;
-		textures[13] = loader.getTexture("dhgWall/dirty2").data;
-		textures[14] = loader.getTexture("brkWall0/tiny").data;
-		textures[15] = loader.getTexture("brkWall0/huge").data;
-		textures[16] = loader.getTexture("brkWall0/big").data;
-		textures[17] = loader.getTexture("checker/blackwhite/huge0").data;
-		textures[18] = loader.getTexture("checker/blackwhite/huge1").data;
-		textures[19] = loader.getTexture("checker/redwhite/huge").data;
-
-		// Hide mouse cursor
-		// Transparent 16 x 16 pixel cursor image.
-		cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-
-		// Create a new blank cursor.
-		blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
-
-		// Set the blank cursor to the JFrame.
-		screen.canvas.setCursor(blankCursor);
-
+		Loader loader = Loader.getInternalloader();
+		tileset = ExampleFactory.exampleTileset(null, loader);
+		
 		testSprites = new Sprite[] {
 				new Sprite(loader.getTexture("carpet/damaged"), false, 255, redscaleMap, null, FIXMULTI, FIXMULTI / 2, -FIXMULTI / 2, 0, 1),
 				new Sprite(loader.getTexture("test"), false, 255, null, /* transMap */null, FIXMULTI * 2, FIXMULTI, 0, 3, 1),
@@ -201,6 +160,8 @@ public class Caster {
 				new Sprite(loader.getTexture("pickup/bullets2"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
 				new Sprite(loader.getTexture("pickup/magic"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 2, 1),
 				new Sprite(loader.getTexture("bomb/fuse0-0"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 1, 1),
+				new Sprite(loader.getTexture("pickup/weapon/pencilgun"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
+				new Sprite(loader.getTexture("pickup/weapon/pistol"), false, 0, null, null, FIXMULTI, FIXMULTI, 0, 0, 1),
 				new Sprite(
 						new Texture[] { loader.getTexture("x/0"), loader.getTexture("x/1"), loader.getTexture("x/2"), loader.getTexture("x/3"),
 								loader.getTexture("x/4"), loader.getTexture("x/5"), loader.getTexture("x/6"), loader.getTexture("x/7") },
@@ -208,7 +169,7 @@ public class Caster {
 		testSpritesPos = new Position[] { new Position(10, 10.75), new Position(2.3, 4.5), new Position(2.5, 10.5), new Position(18.5, 15.5),
 				new Position(17.5, 15.5),
 				new Position(17.5, 17.5), new Position(20.5, 16.5), new Position(19.5, 15.5), new Position(18.5, 14.5), new Position(20, 13.5),
-				new Position(18, 12.75), new Position(16, 13.75), new Position(16, 14.75), new Position(16.5, 16.5), new Position(10.5, 15.5), new Position(20, 10.5) };
+				new Position(18, 12.75), new Position(16, 13.75), new Position(16, 14.75), new Position(16.5, 16.5), new Position(10.5, 15.5), new Position(12.5, 13.5), new Position(10.5, 13.5), new Position(20, 10.5) };
 	}
 
 	public boolean doQuit() {
@@ -316,7 +277,7 @@ public class Caster {
 				int m = map[mapPos.x][mapPos.y];
 				if (m != 0) {
 					hit = true;
-					texture = textures[m % textures.length];
+					texture = tileset.walls[m].data;
 					// Calculate distance projected on camera direction (oblique
 					// distance will give fisheye effect!)
 					if (side)
@@ -415,9 +376,9 @@ public class Caster {
 					// lighting
 					light = min(255, (int) (((255 / currentDist) * 5)));
 					// floor
-					buffer[x + (y * w)] = lightMap[light][(int) (textures[floorTexture][floorTexX][floorTexY]) & 0xFF];
+					buffer[x + (y * w)] = lightMap[light][(int) (tileset.walls[floorTexture].data[floorTexX][floorTexY]) & 0xFF];
 					// ceiling (symmetrical!)
-					buffer[x + ((h - y - 1) * w)] = lightMap[light][(int) (textures[ceilingTexture][floorTexX][floorTexY]) & 0xFF];
+					buffer[x + ((h - y - 1) * w)] = lightMap[light][(int) (tileset.walls[ceilingTexture].data[floorTexX][floorTexY]) & 0xFF];
 				}
 			}
 		}
@@ -798,7 +759,7 @@ public class Caster {
 		 */
 		// out.printf("W pressed? "+(input.states[Input.Keys.FORWARD.ordinal()]?"Yes":"No")+"%n");
 		graph.setColor(Color.CYAN);
-		graph.drawString(Double.toString(fps), 0, h);
+		graph.drawString("FPS: "+Double.toString(fps), 0, h);
 		screen.showFrame(bufferImg);
 		fpsLabel.setText("FPS: " + Double.toString(fps));
 		maxZLabel.setText("Max Z: " + Double.toString(maxZ));

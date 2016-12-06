@@ -80,6 +80,15 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
 
   Zapper:
     Like the NES zapper, but actually shoots stuff (similiar to Doom's plasma gun). Projectile, uses battery power, very tech, alignment affects firing rate or/and energy consumption.
+	
+  Rocket Launcher:
+  	It fires rockets. nuff said
+
+  Pistol:
+    It hitscans. Hail it.
+  
+  Golden Pistol:
+    More damage, more joy.
 
   Energy sphere:
     A sphere of magical energy that can be shot. Projectile, uses magic energy, very magic, alignment affects damage.
@@ -110,6 +119,13 @@ Alignment/Skill Direction (TODO: Find a good name for it) - Affects effectivity 
     Temporarily upgrades magic weapons (like the tome of power from Heretic)
 
  -- Enemy ideas --
+  
+  Corrupted Book:
+    It flies and does... something.
+    
+  Ghost:
+    A shadowy figure that does... something
+ 
   Corrupted Unicorn:
     A unicorn, but EVIL!!!
 

@@ -5,12 +5,13 @@ import static net.irq_interactive.langenstein3D.FixedPoint.MAX_FRACT;
 import net.irq_interactive.langenstein3D.CompassDir;
 import net.irq_interactive.langenstein3D.game.Game;
 import net.irq_interactive.langenstein3D.game.Tileset;
+import net.irq_interactive.langenstein3D.game.render.Texture;
 
 public abstract class Tile {
 
 	protected final Tileset parent;
 	
-	public Tile(Tileset parent) {
+	public Tile(Tileset parent,Object... params) {
 		this.parent = parent;
 	}
 	
@@ -26,7 +27,7 @@ public abstract class Tile {
 	/**
 	 * Returns the horizontal texture offset on this tile, if it were at map XY, in world units (fixed point)
 	 */
-	public int getTextureOffset(int x,int y) {
+	public int getTextureOffset(int x,int y,CompassDir side) {
 		return 0;
 	}
 	
@@ -56,8 +57,8 @@ public abstract class Tile {
 		return 1; //That's too deep for me! Bail out!
 	}
 	
-	public int getWallTexture(boolean render,int x, int y, int granularity, int subx, int suby, CompassDir dir) {
-		return parent.game.getWallTex(x, y);
+	public Texture getWallTexture(boolean render,int x, int y, int granularity, int subx, int suby, CompassDir dir) {
+		return parent.walls[parent.game.getWallTex(x, y)];
 	}
 	
 	/**
@@ -75,7 +76,7 @@ public abstract class Tile {
 		}
 	}
 	
-	public int getFlatTexture(boolean render,int x, int y, int granularity, int subx, int suby) {
-		return parent.game.getFlatTex(x, y);
+	public Texture getFlatTexture(boolean render,int x, int y, int granularity, int subx, int suby) {
+		return parent.flats[parent.game.getFlatTex(x, y)];
 	}
 }

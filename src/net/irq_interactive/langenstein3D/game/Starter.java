@@ -1,9 +1,11 @@
 package net.irq_interactive.langenstein3D.game;
 
 import java.lang.reflect.Constructor;
+import java.util.Map;
 
 import net.irq_interactive.langenstein3D.game.audio.MusicPlayer;
 import net.irq_interactive.langenstein3D.game.render.Caster;
+import net.irq_interactive.langenstein3D.launcher.Launchable;
 
 /**
  * Abstrakte Klasse Starter - beschreiben Sie hier die Klasse
@@ -11,13 +13,9 @@ import net.irq_interactive.langenstein3D.game.render.Caster;
  * @author (Ihr Name)
  * @version (eine Version-Nummer oder ein Datum)
  */
-public final class Starter {
+public final class Starter extends Launchable {
 	public static Caster caster;
 	public static MusicPlayer music;
-
-	private Starter() {
-		// Dummy
-	}
 
 	/**
 	 * Improves timing precision on M$ Windows
@@ -43,43 +41,22 @@ public final class Starter {
 	}
 
 	@SuppressWarnings("unused")
-	public static void main(String[] args) { // TODO: no longer pass values as strings, move timing somewhere else
+	public int launch(Map<String,Object> args) { // TODO: no longer pass values as strings, move timing somewhere else
 		System.setProperty("sun.java2d.opengl", "True"); // This allows using VSYNC and page flipping. TODO: Make configurable
 		// create sleeper, always a good idea!
 		new Sleeper().start();
-		switch (args.length) {
-		case 3:
-			caster = new Caster(Integer.decode(args[0]), Integer.decode(args[1]), !args[2].equals("window"));
-			break;
-		case 2:
-			caster = new Caster(Integer.decode(args[0]), Integer.decode(args[1]), true);
-			break;
-		case 1:
-			if (args[0].equals("colormap")) {
-				testColorMap();
-				return;
-			} else if (args[0].equals("window")) {
-				caster = new Caster(640, 480, false);
-				break;
-			} else if (args[0].equals("editor")) {
-				try {
-					Class<?> editorClass = ClassLoader.getSystemClassLoader().loadClass("net.irq_interactive.langenstein3D.editor.EditorMain");
-					Constructor<?> con = editorClass.getConstructor(String[].class);
-					con.newInstance((Object) new String[0]);
-					return;
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-			}
-		default:
-			caster = new Caster(640, 480, true);
-			break;
+		if((Boolean)args.getOrDefault("debug.colormap", Boolean.FALSE)) {
+			testColorMap();
+			return 0;
 		}
-		if (true) {
+		caster = new Caster((Integer)args.getOrDefault("render.width", 640), (Integer)args.getOrDefault("render.height", 480), (Boolean)args.getOrDefault("render.fullscreen", true));
+		if ((Boolean)args.getOrDefault("sound.musicEnabled", Boolean.FALSE)) {
 			music = new MusicPlayer();
 			music.play("KingOfTheDesert");
 		}
+		
+		
+		
 		long frameStart, frameStop;
 		while (!caster.doQuit()) {
 			frameStart = System.nanoTime();
@@ -93,7 +70,7 @@ public final class Starter {
 			} catch (InterruptedException e) {
 			}
 		}
-		System.exit(0);
+		return 0;
 	}
 
 	public static void testColorMap() {

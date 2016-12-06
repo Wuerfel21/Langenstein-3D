@@ -1,0 +1,2 @@
+src/net/irq_interactive/langenstein3D/derived/*.*
+!src/net/irq_interactive/langenstein3D/derived/.gitignore

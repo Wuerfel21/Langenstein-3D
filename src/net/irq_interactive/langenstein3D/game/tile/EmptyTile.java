@@ -14,8 +14,8 @@ public class EmptyTile extends Tile {
 	/**
 	 * @param parent
 	 */
-	public EmptyTile(Tileset parent) {
-		super(parent);
+	public EmptyTile(Tileset parent,Object... params) {
+		super(parent,params);
 		// TODO Auto-generated constructor stub
 	}
 

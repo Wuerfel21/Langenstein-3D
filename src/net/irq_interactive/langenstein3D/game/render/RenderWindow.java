@@ -5,6 +5,7 @@ package net.irq_interactive.langenstein3D.game.render;
 
 import java.awt.BufferCapabilities;
 import java.awt.Canvas;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
@@ -13,6 +14,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.ImageCapabilities;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JRootPane;
 
 import net.irq_interactive.langenstein3D.GameConstants;
 import net.irq_interactive.langenstein3D.game.Loader;
@@ -52,6 +56,8 @@ public class RenderWindow extends JFrame {
 	
 	public RenderWindow(Dimension d, boolean fullscreen) {
 		super(GameConstants.GAME + " " + GameConstants.VERSION);
+		this.setUndecorated(fullscreen);
+		this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 		this.setIconImages(Loader.getIcons());
 		this.setIgnoreRepaint(true);
 		if (fullscreen) this.setUndecorated(true);
@@ -94,6 +100,14 @@ public class RenderWindow extends JFrame {
 	    manager.addKeyEventDispatcher(new GlobalKeyListenerAdapter(keyListeners));
 	    canvas.addMouseListener(kbm);
 	    canvas.addMouseMotionListener(kbm);
+	    
+		// Hide mouse cursor
+		// Transparent 16 x 16 pixel cursor image.
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		// Create a new blank cursor.
+		Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+		// Set the blank cursor to the JFrame.
+		canvas.setCursor(blankCursor);
 	}
 	
 	public void showFrame(BufferedImage frame) {

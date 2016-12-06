@@ -182,10 +182,10 @@ public class Loader {
 		List<Image> list = new ArrayList<>();
 		Loader loader = getInternalloader();
 		try {
-			list.add(ImageIO.read(loader.get("/assets/internal/irq_tiny.png")));
-			list.add(ImageIO.read(loader.get("/assets/internal/irq_micro.png")));
-			list.add(ImageIO.read(loader.get("/assets/internal/irq_mini.png")));
-			list.add(ImageIO.read(loader.get("/assets/internal/irq_square.png")));
+			list.add(ImageIO.read(loader.get("/assets/internal/icon/128.png")));
+			list.add(ImageIO.read(loader.get("/assets/internal/icon/64.png")));
+			list.add(ImageIO.read(loader.get("/assets/internal/icon/32.png")));
+			list.add(ImageIO.read(loader.get("/assets/internal/icon/16.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

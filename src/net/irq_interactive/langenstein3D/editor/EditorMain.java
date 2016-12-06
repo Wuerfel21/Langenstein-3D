@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -20,35 +21,43 @@ import javax.swing.JOptionPane;
 
 import net.irq_interactive.langenstein3D.GameConstants;
 import net.irq_interactive.langenstein3D.game.Loader;
-
+import net.irq_interactive.langenstein3D.launcher.Launchable;
 
 /**
- * Main window of the editor.
- * EDIT WITH WINDOWBUILDER!!!!!!
+ * Main window of the editor. EDIT WITH WINDOWBUILDER!!!!!!
  * 
  * @author Wuerfel_21
  *
  */
-public class EditorMain {
+public class EditorMain extends Launchable {
 
-	private JFrame frame;
+	public JFrame frame;
 
 	/**
 	 * Create the application.
 	 */
-	public EditorMain(String[] args) {
+	public EditorMain() {
+	}
+
+	/**
+	 * @wbp.parser.entryPoint
+	 */
+	@Override
+	public int launch(Map<String, Object> args) throws Exception {
 		initialize();
-		try {
+		synchronized (frame) {
 			frame.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
+			frame.wait();
 		}
+		return 0;
 	}
 
 	private void exit() {
 		if (JOptionPane.showConfirmDialog(frame, "Really quit the editor?\nALL UNSAVED DATA WILL BE LOST!", "", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.WARNING_MESSAGE, null) == 0) { // TODO: localization
-			System.exit(0);
+			synchronized (frame) {
+				frame.notify();
+			}
 		}
 	}
 
